@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import * as Sentry from '@sentry/react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -7,7 +8,10 @@ function ErrorButton() {
   return (
     <button
       onClick={() => {
-        throw new Error('This is your first error!')
+        const err = new Error('This is your first error!')
+        Sentry.captureException(err)
+        // Throw after capture to trigger global handler as well
+        throw err
       }}
       className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
     >
