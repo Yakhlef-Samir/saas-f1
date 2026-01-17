@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuthStore, selectIsLoading, selectError } from '../stores/authStore'
 
@@ -21,7 +21,7 @@ export default function RegisterForm() {
     password_confirm: '',
   })
 
-  const [isFormValid, setIsFormValid] = useState(false)
+    const [isFormValid, setIsFormValid] = useState(false)
   const [passwordStrength, setPasswordStrength] = useState(0)
   const [showSuccess, setShowSuccess] = useState(false)
 
@@ -32,7 +32,7 @@ export default function RegisterForm() {
   }
 
   // Password strength calculator
-  const calculatePasswordStrength = (password: string) => {
+  const calculatePasswordStrength = (password: string): number => {
     let strength = 0
     
     if (password.length >= 8) strength++
@@ -44,27 +44,33 @@ export default function RegisterForm() {
     return strength
   }
 
-  // Validate form
-  useEffect(() => {
+  // Memoize form validation to avoid setState in effect
+  const formValidation = useMemo(() => {
     let isValid = true
 
-    if (!formData.email || !validateEmail(formData.email)) {
+    if (!validateEmail(formData.email)) {
       isValid = false
     }
 
-    if (!formData.password || formData.password.length < 8) {
+    if (formData.password.length < 8) {
       isValid = false
     }
 
-    if (!formData.password_confirm || formData.password !== formData.password_confirm) {
+    if (formData.password !== formData.password_confirm) {
       isValid = false
     }
 
-    // Calculate password strength
-    setPasswordStrength(calculatePasswordStrength(formData.password))
+    const passwordStrength = calculatePasswordStrength(formData.password)
+    const isFormValid = Boolean(isValid && formData.email && formData.password && formData.password_confirm)
 
-    setIsFormValid(isValid && formData.email && formData.password && formData.password_confirm)
-  }, [formData])
+    return { passwordStrength, isFormValid }
+  }, [formData.email, formData.password, formData.password_confirm])
+
+  // Update state when validation changes
+  useEffect(() => {
+    setPasswordStrength(formValidation.passwordStrength)
+    setIsFormValid(formValidation.isFormValid)
+  }, [formValidation])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target

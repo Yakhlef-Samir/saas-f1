@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuthStore, selectIsLoading, selectError } from '../stores/authStore'
 import { AuthLayout } from '@/components/layouts'
@@ -19,7 +19,7 @@ interface FormErrors {
 
 export default function LoginForm() {
   const navigate = useNavigate()
-  const login = useAuthStore((state) => state.login)
+    const register = useAuthStore((state) => state.register)
   const clearError = useAuthStore((state) => state.clearError)
   const isLoading = useAuthStore(selectIsLoading)
   const error = useAuthStore(selectError)
@@ -40,8 +40,8 @@ export default function LoginForm() {
     return emailRegex.test(email)
   }
 
-  // Validate form
-  useEffect(() => {
+  // Memoize form validation to avoid setState in effect
+  const formValidation = useMemo(() => {
     const errors: FormErrors = {}
 
     if (!formData.email) {
@@ -54,9 +54,16 @@ export default function LoginForm() {
       errors.password = 'Le mot de passe est requis'
     }
 
-    setFormErrors(errors)
-    setIsFormValid(Object.keys(errors).length === 0 && formData.email && formData.password)
-  }, [formData])
+    const isFormValid = Boolean(Object.keys(errors).length === 0 && formData.email && formData.password)
+
+    return { errors, isFormValid }
+  }, [formData.email, formData.password])
+
+  // Update state when validation changes
+  useEffect(() => {
+    setFormErrors(formValidation.errors)
+    setIsFormValid(formValidation.isFormValid)
+  }, [formValidation])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -71,7 +78,10 @@ export default function LoginForm() {
 
     if (!isFormValid) return
 
-    const success = await login(formData)
+    const success = await register({
+      ...formData,
+      password_confirm: formData.password
+    })
 
     if (success) {
       navigate('/dashboard')

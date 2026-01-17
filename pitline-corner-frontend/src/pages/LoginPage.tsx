@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuthStore, selectIsLoading, selectError } from '../stores/authStore'
 
@@ -9,7 +9,6 @@ interface FormData {
 
 export default function LoginPage() {
   const navigate = useNavigate()
-  const login = useAuthStore((state) => state.register) // Temporaire, à remplacer par la vraie fonction login
   const clearError = useAuthStore((state) => state.clearError)
   const isLoading = useAuthStore(selectIsLoading)
   const error = useAuthStore(selectError)
@@ -19,19 +18,17 @@ export default function LoginPage() {
     password: '',
   })
 
-  const [isFormValid, setIsFormValid] = useState(true)
-
+  
   // Email validation
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return emailRegex.test(email)
   }
 
-  // Validate form
-  useEffect(() => {
-    const isValid = formData.email && validateEmail(formData.email) && formData.password.length > 0
-    setIsFormValid(isValid)
-  }, [formData])
+  // Memoize form validation to avoid setState in effect
+  const isFormValid = useMemo(() => {
+    return formData.email && validateEmail(formData.email) && formData.password.length > 0
+  }, [formData.email, formData.password])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
