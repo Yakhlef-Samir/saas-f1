@@ -1,6 +1,6 @@
 # Story 1.1: Setup Frontend Project
 
-Status: review
+Status: done
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -27,17 +27,17 @@ so that je puisse développer rapidement les fonctionnalités utilisateur.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Initialize Vite React TypeScript project (AC: All)
-  - [ ] Run `npm create vite@latest pitline-corner-frontend -- --template react-ts`
-  - [ ] Verify React 18+ and TypeScript 5+ are installed
-  - [ ] Enable TypeScript strict mode in tsconfig.json
-  - [ ] Test that `npm run dev` starts without errors
+- [x] Task 1: Initialize Vite React TypeScript project (AC: All)
+  - [x] Run `npm create vite@latest pitline-corner-frontend -- --template react-ts`
+  - [x] Verify React 18+ and TypeScript 5+ are installed
+  - [x] Enable TypeScript strict mode in tsconfig.json
+  - [x] Test that `npm run dev` starts without errors
 
-- [ ] Task 2: Install and configure Tailwind CSS (AC: Tailwind CSS 3+)
-  - [ ] Install Tailwind CSS 3+ with PostCSS and Autoprefixer
-  - [ ] Create tailwind.config.js with responsive breakpoints (mobile: 320px, tablet: 768px, desktop: 1024px)
-  - [ ] Configure content paths for Tailwind purging
-  - [ ] Add Tailwind directives to index.css
+- [x] Task 2: Install and configure Tailwind CSS (AC: Tailwind CSS 3+)
+  - [x] Install Tailwind CSS 3+ with PostCSS and Autoprefixer
+  - [x] Create tailwind.config.js with responsive breakpoints (mobile: 320px, tablet: 768px, desktop: 1024px)
+  - [x] Configure content paths for Tailwind purging
+  - [x] Add Tailwind directives to index.css
 
 - [x] Task 3: Setup ESLint and Prettier (AC: ESLint + Prettier)
   - [x] Install ESLint with React and TypeScript plugins
@@ -264,3 +264,29 @@ Claude 3.5 Sonnet (as Amelia Dev Agent)
 - `pitline-corner-frontend/README.md` - Complete project documentation
 
 **Total Files:** 22 (7 created, 6 modified, 9 directories created)
+
+## Senior Developer Review (AI)
+
+**Review Date:** 2026-01-17
+**Review Outcome:** Approve (after fixes)
+**Reviewer:** Claude Opus 4.5
+
+### Action Items
+
+- [x] [HIGH] Fix unused `Link` import in App.tsx causing build/lint failure
+- [x] [MEDIUM] Tasks 1 & 2 were incorrectly marked [ ] - corrected to [x]
+
+### Review Notes
+
+**Issues Found and Fixed:**
+1. `npm run build` was failing due to unused `Link` import - FIXED
+2. `npm run lint` was failing with 2 errors - FIXED
+3. Tasks 1 & 2 were marked incomplete but were actually done - CORRECTED
+
+**Verification After Fixes:**
+- All tasks now correctly marked [x]
+- Build passes without errors
+- Lint passes without errors
+- Tests pass (1 test passing)
+
+**Approval:** Story meets all acceptance criteria after fixes applied.

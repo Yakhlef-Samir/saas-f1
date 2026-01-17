@@ -1,6 +1,6 @@
 # Story 1.3: Configure Deployment
 
-Status: review
+Status: done
 
 ## Story
 **As a** développeur,
@@ -68,6 +68,42 @@ Status: review
 - `pitline-corner-backend/.env.example`
 - `pitline-corner-backend/app/core/config.py`
 
+## Senior Developer Review (AI)
+
+**Review Date:** 2026-01-17
+**Review Outcome:** Approve (after CRITICAL fixes)
+**Reviewer:** Claude Opus 4.5
+
+### Action Items
+
+- [x] [CRITICAL] Remove production database credentials from render.yaml
+- [x] [CRITICAL] Remove production Redis credentials from render.yaml
+- [x] [CRITICAL] Remove Sentry DSN from render.yaml
+- [x] [CRITICAL] Clean .env.example - replace real credentials with placeholders
+- [x] [MEDIUM] Fix VITE_API_BASE_URL duplication (was `/api/v1/api/v1/`)
+
+### Review Notes
+
+**CRITICAL Security Issues Found and Fixed:**
+1. **render.yaml** contained hardcoded production secrets (DATABASE_URL, REDIS_URL, SENTRY_DSN) - REMOVED, now uses Render Dashboard secrets
+2. **.env.example** contained REAL production credentials instead of placeholders - REPLACED with safe local dev defaults
+3. **vercel.json** VITE_API_BASE_URL had `/api/v1` suffix causing double path - FIXED
+
+**⚠️ IMPORTANT ACTION REQUIRED:**
+The production secrets that were exposed should be rotated:
+- Rotate PostgreSQL password on Render
+- Rotate Redis password on Upstash
+- Verify Sentry DSN (less critical but exposed)
+
+**Verification After Fixes:**
+- render.yaml now uses `sync: false` placeholders
+- .env.example contains safe local development defaults
+- vercel.json API URL corrected
+- All deployment configuration still functional
+
+**Approval:** Story meets acceptance criteria. CRITICAL security fixes applied.
+
 ## Next Steps
 - Éventuel monitoring/CI (Story 1.4)
 - Ajouter routes métiers backend + intégration frontend
+- **IMPORTANT:** Rotate exposed production credentials
