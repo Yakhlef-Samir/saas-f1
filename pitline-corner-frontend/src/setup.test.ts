@@ -1,5 +1,8 @@
 // Smoke test to verify project setup works correctly
 import { describe, it, expect } from 'vitest'
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
 describe('Project Setup Smoke Test', () => {
   it('should verify React is available', () => {
@@ -22,21 +25,20 @@ describe('Project Setup Smoke Test', () => {
   })
 
   it('should verify project structure exists', () => {
-    const fs = require('fs')
-    const path = require('path')
-    
     const requiredDirs = [
       'src/components',
-      'src/pages', 
+      'src/pages',
       'src/hooks',
       'src/services',
       'src/utils',
       'src/types',
-      'src/styles'
+      'src/styles',
     ]
-    
-    requiredDirs.forEach(dir => {
-      expect(fs.existsSync(path.join(__dirname, '..', dir))).toBe(true)
+
+    const currentDir = path.dirname(fileURLToPath(import.meta.url))
+
+    requiredDirs.forEach((dir) => {
+      expect(fs.existsSync(path.join(currentDir, '..', dir))).toBe(true)
     })
   })
 })

@@ -43,8 +43,8 @@ development_status:
   # Epic 1: Project Foundation
   epic-1: in-progress
   1-1-setup-frontend-project: review
-  1-2-setup-backend-project: backlog
-  1-3-configure-deployment: backlog
+  1-2-setup-backend-project: review
+  1-3-configure-deployment: review
   1-4-setup-monitoring-ci: backlog
   epic-1-retrospective: optional
   
