@@ -230,4 +230,66 @@ Voir `architecture.md` pour la structure complète.
 
 ---
 
-_Dernière mise à jour : 2026-01-15_
+## Git Branching Strategy
+
+**Règle principale** : `main` = production uniquement. Tout développement sur branches.
+
+### Branch Naming Convention
+
+```
+epic-{n}/{story-key}
+```
+
+**Exemples:**
+- `epic-1/setup-monitoring-ci` pour story 1-4
+- `epic-2/user-registration` pour story 2-1
+- `epic-3/fastf1-data-import` pour story 3-1
+
+### Workflow
+
+1. **Créer la branche** depuis `main`
+   ```bash
+   git checkout main && git pull
+   git checkout -b epic-1/setup-monitoring-ci
+   ```
+
+2. **Développer** sur la branche
+   - Commits réguliers avec messages descriptifs
+   - Tests passent avant chaque commit
+
+3. **Pull Request** vers `main`
+   - Tous les tests CI passent
+   - Code review (optionnel si solo)
+
+4. **Merge** dans `main`
+   - Squash merge recommandé pour un historique propre
+   - Déploiement automatique déclenché
+
+### Submodules (Backend/Frontend)
+
+Chaque submodule suit la même convention:
+```bash
+# Dans pitline-corner-backend/
+git checkout -b epic-1/setup-monitoring-ci
+
+# Dans pitline-corner-frontend/
+git checkout -b epic-1/setup-monitoring-ci
+```
+
+**Synchronisation** : Les branches des submodules et du repo parent doivent avoir le même nom.
+
+### Commits
+
+Format: `type: description`
+
+Types: `feat`, `fix`, `chore`, `docs`, `test`, `refactor`
+
+```bash
+feat: add GitHub Actions CI workflow
+fix: resolve lint errors in App.tsx
+chore: update dependencies
+```
+
+---
+
+_Dernière mise à jour : 2026-01-17_
