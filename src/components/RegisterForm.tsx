@@ -67,7 +67,7 @@ export default function RegisterForm() {
       localStorage.setItem('access_token', data.access_token)
       
       setSuccess(true)
-    } catch (err) {
+    } catch {
       setError('Erreur de connexion au serveur')
     } finally {
       setIsLoading(false)
