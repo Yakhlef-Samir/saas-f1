@@ -41,16 +41,17 @@ story_location: "{project-root}/_bmad-output/implementation-artifacts"
 
 development_status:
   # Epic 1: Project Foundation
-  epic-1: in-progress
+  epic-1: done
   1-1-setup-frontend-project: done
   1-2-setup-backend-project: done
   1-3-configure-deployment: done
-  1-4-setup-monitoring-ci: backlog
+  1-4-setup-monitoring-ci: done
   epic-1-retrospective: optional
   
   # Epic 2: Authentification & Profils
-  epic-2: backlog
-  2-1-user-registration: backlog
+  epic-2: in-progress
+  2-0-design-system-setup: in-progress
+  2-1-user-registration: review
   2-2-user-login: backlog
   2-3-user-profile-management: backlog
   2-4-protected-routes-session: backlog

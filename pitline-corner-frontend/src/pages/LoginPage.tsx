@@ -1,16 +1,14 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuthStore, selectIsLoading, selectError } from '../stores/authStore'
 
 interface FormData {
   email: string
   password: string
-  password_confirm: string
 }
 
-export default function RegisterForm() {
+export default function LoginPage() {
   const navigate = useNavigate()
-  const register = useAuthStore((state) => state.register)
   const clearError = useAuthStore((state) => state.clearError)
   const isLoading = useAuthStore(selectIsLoading)
   const error = useAuthStore(selectError)
@@ -18,59 +16,19 @@ export default function RegisterForm() {
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',
-    password_confirm: '',
   })
 
-    const [isFormValid, setIsFormValid] = useState(false)
-  const [passwordStrength, setPasswordStrength] = useState(0)
-  const [showSuccess, setShowSuccess] = useState(false)
-
+  
   // Email validation
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return emailRegex.test(email)
   }
 
-  // Password strength calculator
-  const calculatePasswordStrength = (password: string): number => {
-    let strength = 0
-    
-    if (password.length >= 8) strength++
-    if (password.length >= 12) strength++
-    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++
-    if (/\d/.test(password)) strength++
-    if (/[^a-zA-Z\d]/.test(password)) strength++
-    
-    return strength
-  }
-
   // Memoize form validation to avoid setState in effect
-  const formValidation = useMemo(() => {
-    let isValid = true
-
-    if (!validateEmail(formData.email)) {
-      isValid = false
-    }
-
-    if (formData.password.length < 8) {
-      isValid = false
-    }
-
-    if (formData.password !== formData.password_confirm) {
-      isValid = false
-    }
-
-    const passwordStrength = calculatePasswordStrength(formData.password)
-    const isFormValid = Boolean(isValid && formData.email && formData.password && formData.password_confirm)
-
-    return { passwordStrength, isFormValid }
-  }, [formData.email, formData.password, formData.password_confirm])
-
-  // Update state when validation changes
-  useEffect(() => {
-    setPasswordStrength(formValidation.passwordStrength)
-    setIsFormValid(formValidation.isFormValid)
-  }, [formValidation])
+  const isFormValid = useMemo(() => {
+    return formData.email && validateEmail(formData.email) && formData.password.length > 0
+  }, [formData.email, formData.password])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -85,14 +43,9 @@ export default function RegisterForm() {
 
     if (!isFormValid) return
 
-    const success = await register(formData)
-
-    if (success) {
-      setShowSuccess(true)
-      setTimeout(() => {
-        navigate('/')
-      }, 2000)
-    }
+    // TODO: Implémenter la vraie fonction login
+    // const success = await login({ email: formData.email, password: formData.password })
+    navigate('/dashboard')
   }
 
   return (
@@ -194,11 +147,11 @@ export default function RegisterForm() {
             textShadow: '3px 3px 0px #dc0000',
             letterSpacing: '2px'
           }}>
-            Grille de Départ
+            Retour aux Pits
           </h2>
 
           {error && (
-            <div id="email-error" role="alert" aria-live="polite" style={{
+            <div style={{
               backgroundColor: 'rgba(220, 0, 0, 0.2)',
               border: '1px solid #dc0000',
               color: '#ffffff',
@@ -233,9 +186,6 @@ export default function RegisterForm() {
                 onChange={handleChange}
                 required
                 placeholder="votre@ecurie.com"
-                aria-label="Email du pilote"
-                aria-describedby="email-error"
-                aria-invalid={!!error}
                 style={{
                   width: '100%',
                   padding: '15px',
@@ -276,7 +226,7 @@ export default function RegisterForm() {
                 textTransform: 'uppercase',
                 letterSpacing: '1px'
               }}>
-                Mot de passe (Code Stand)
+                Code Stand
               </label>
               <input
                 type="password"
@@ -285,94 +235,6 @@ export default function RegisterForm() {
                 onChange={handleChange}
                 required
                 placeholder="••••••••"
-                aria-label="Mot de passe"
-                aria-describedby="password-strength"
-                style={{
-                  width: '100%',
-                  padding: '15px',
-                  background: 'rgba(0, 0, 0, 0.6)',
-                  border: 'none',
-                  borderLeft: '5px solid #555',
-                  borderBottom: '2px solid #555',
-                  color: '#e0e0e0',
-                  fontFamily: 'Orbitron, sans-serif',
-                  fontSize: '1.1em',
-                  transition: 'all 0.3s ease',
-                  boxSizing: 'border-box'
-                }}
-                onFocus={(e) => {
-                  const target = e.target as HTMLInputElement
-                  target.style.borderLeftColor = '#dc0000'
-                  target.style.borderBottomColor = '#dc0000'
-                  target.style.boxShadow = '0 0 15px rgba(220, 0, 0, 0.5)'
-                  target.style.background = 'rgba(20, 0, 0, 0.8)'
-                }}
-                onBlur={(e) => {
-                  const target = e.target as HTMLInputElement
-                  target.style.borderLeftColor = '#555'
-                  target.style.borderBottomColor = '#555'
-                  target.style.boxShadow = 'none'
-                  target.style.background = 'rgba(0, 0, 0, 0.6)'
-                }}
-              />
-              
-              {/* Password strength indicator */}
-              {formData.password && (
-                <div id="password-strength" style={{ marginTop: '8px' }}>
-                  <div style={{
-                    display: 'flex',
-                    gap: '4px',
-                    marginBottom: '4px'
-                  }}>
-                    {[1, 2, 3, 4, 5].map((level) => (
-                      <div
-                        key={level}
-                        style={{
-                          flex: 1,
-                          height: '4px',
-                          backgroundColor: level <= passwordStrength 
-                            ? passwordStrength <= 2 ? '#dc0000' 
-                            : passwordStrength === 3 ? '#ffa500' 
-                            : '#00ff00'
-                            : '#333',
-                          transition: 'background-color 0.3s ease'
-                        }}
-                      />
-                    ))}
-                  </div>
-                  <p style={{
-                    color: passwordStrength <= 2 ? '#dc0000' : passwordStrength === 3 ? '#ffa500' : '#00ff00',
-                    fontSize: '11px',
-                    fontFamily: 'Orbitron, sans-serif',
-                    textTransform: 'uppercase',
-                    letterSpacing: '1px'
-                  }}>
-                    {passwordStrength <= 2 ? 'Code faible' : passwordStrength === 3 ? 'Code moyen' : 'Code fort'}
-                  </p>
-                </div>
-              )}
-            </div>
-
-            <div style={{ marginBottom: '25px', position: 'relative' }}>
-              <label style={{
-                display: 'block',
-                color: '#dc0000',
-                fontWeight: 'bold',
-                fontSize: '0.9em',
-                marginBottom: '8px',
-                textTransform: 'uppercase',
-                letterSpacing: '1px'
-              }}>
-                Confirmation du Code
-              </label>
-              <input
-                type="password"
-                name="password_confirm"
-                value={formData.password_confirm}
-                onChange={handleChange}
-                required
-                placeholder="••••••••"
-                aria-label="Confirmation du mot de passe"
                 style={{
                   width: '100%',
                   padding: '15px',
@@ -406,8 +268,6 @@ export default function RegisterForm() {
             <button
               type="submit"
               disabled={!isFormValid || isLoading}
-              aria-label="S'inscrire à Pitline Corner"
-              aria-describedby="email-error"
               style={{
                 width: '100%',
                 padding: '15px',
@@ -424,8 +284,7 @@ export default function RegisterForm() {
                 cursor: !isFormValid || isLoading ? 'not-allowed' : 'pointer',
                 clipPath: 'polygon(10% 0, 100% 0, 90% 100%, 0% 100%)',
                 transition: 'all 0.3s ease',
-                textShadow: '1px 1px 2px black',
-                transform: !isFormValid || isLoading ? 'scale(1)' : 'scale(1)'
+                textShadow: '1px 1px 2px black'
               }}
               onMouseEnter={(e) => {
                 const target = e.target as HTMLButtonElement
@@ -443,20 +302,8 @@ export default function RegisterForm() {
                   target.style.boxShadow = 'none'
                 }
               }}
-              onMouseDown={(e) => {
-                const target = e.target as HTMLButtonElement
-                if (isFormValid && !isLoading) {
-                  target.style.transform = 'scale(0.98)'
-                }
-              }}
-              onMouseUp={(e) => {
-                const target = e.target as HTMLButtonElement
-                if (isFormValid && !isLoading) {
-                  target.style.transform = 'scale(1.05)'
-                }
-              }}
             >
-              {isLoading ? "CHARGEMENT..." : "GO ! GO ! GO !"}
+              {isLoading ? "CHARGEMENT..." : "DEMARRAGE !"}
             </button>
           </form>
 
@@ -465,7 +312,7 @@ export default function RegisterForm() {
             textAlign: 'center'
           }}>
             <Link
-              to="/login"
+              to="/register"
               style={{
                 color: '#e0e0e0',
                 fontSize: '14px',
@@ -482,7 +329,7 @@ export default function RegisterForm() {
                 e.currentTarget.style.color = '#e0e0e0'
               }}
             >
-              Déjà sur la grille ?
+              Nouveau Pilote ?
             </Link>
           </div>
         </div>
@@ -491,63 +338,12 @@ export default function RegisterForm() {
       {/* Google Fonts */}
       <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Russo+One&display=swap" rel="stylesheet" />
       
-      {/* Success Animation */}
-      {showSuccess && (
-        <div style={{
-          position: 'fixed',
-          top: 0, left: 0, right: 0, bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.8)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 1000,
-          animation: 'fadeIn 0.3s ease'
-        }}>
-          <div style={{
-            textAlign: 'center',
-            color: '#00ff00',
-            fontFamily: 'Russo One, sans-serif'
-          }}>
-            <div style={{
-              fontSize: '4em',
-              marginBottom: '20px',
-              animation: 'pulse 1s ease infinite'
-            }}>
-              🏁
-            </div>
-            <h2 style={{
-              fontSize: '2.5em',
-              textTransform: 'uppercase',
-              letterSpacing: '3px',
-              textShadow: '0 0 20px #00ff00'
-            }}>
-              Victoire !
-            </h2>
-            <p style={{
-              fontSize: '1.2em',
-              marginTop: '10px',
-              color: '#ffffff'
-            }}>
-              Bienvenue sur la grille de départ
-            </p>
-          </div>
-        </div>
-      )}
-
       {/* CSS Animations */}
       <style dangerouslySetInnerHTML={{
         __html: `
           @keyframes race-speed {
             0% { background-position: 50% 0, 0 0, 0 0; }
             100% { background-position: 50% 0, 0 50px, 0 50px; }
-          }
-          @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-          }
-          @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
           }
         `
       }} />
