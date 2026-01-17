@@ -1,100 +1,44 @@
 import { useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
+import { useAuthStore, selectIsLoading, selectError } from '../stores/authStore'
 
-interface RegisterData {
+interface FormData {
   email: string
   password: string
   password_confirm: string
 }
 
-interface RegisterResponse {
-  access_token: string
-  token_type: string
-}
-
-interface ApiError {
-  error: {
-    code: string
-    message?: string
-  }
-}
-
 export default function RegisterForm() {
-  const [formData, setFormData] = useState<RegisterData>({
+  const navigate = useNavigate()
+  const register = useAuthStore((state) => state.register)
+  const clearError = useAuthStore((state) => state.clearError)
+  const isLoading = useAuthStore(selectIsLoading)
+  const error = useAuthStore(selectError)
+
+  const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',
     password_confirm: '',
   })
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
+    setFormData((prev) => ({ ...prev, [name]: value }))
+    // Clear error when user starts typing
+    if (error) {
+      clearError()
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsLoading(true)
-    setError(null)
 
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      })
+    const success = await register(formData)
 
-      if (!response.ok) {
-        const errorData: ApiError = await response.json()
-        const errorCode = errorData.error?.code
-        
-        if (errorCode === 'EMAIL_EXISTS') {
-          setError('Cet email est déjà utilisé')
-        } else if (errorCode === 'PASSWORD_MISMATCH') {
-          setError('Les mots de passe ne correspondent pas')
-        } else {
-          setError('Erreur lors de l\'inscription')
-        }
-        return
-      }
-
-      const data: RegisterResponse = await response.json()
-      
-      // Store token in localStorage
-      localStorage.setItem('access_token', data.access_token)
-      
-      setSuccess(true)
-    } catch {
-      setError('Erreur de connexion au serveur')
-    } finally {
-      setIsLoading(false)
+    if (success) {
+      // Redirect to home after successful registration
+      navigate('/')
     }
-  }
-
-  if (success) {
-    return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-green-600 mb-4">
-              Inscription réussie !
-            </h2>
-            <p className="text-gray-600 mb-6">
-              Votre compte a été créé avec succès.
-            </p>
-            <button
-              onClick={() => window.location.href = '/'}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors"
-            >
-              Aller à l'accueil
-            </button>
-          </div>
-        </div>
-      </div>
-    )
   }
 
   return (
@@ -103,7 +47,7 @@ export default function RegisterForm() {
         <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
           Créer un compte
         </h2>
-        
+
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
             {error}
@@ -112,7 +56,10 @@ export default function RegisterForm() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Email
             </label>
             <input
@@ -128,7 +75,10 @@ export default function RegisterForm() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Mot de passe
             </label>
             <input
@@ -145,7 +95,10 @@ export default function RegisterForm() {
           </div>
 
           <div>
-            <label htmlFor="password_confirm" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="password_confirm"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Confirmer le mot de passe
             </label>
             <input
@@ -166,16 +119,19 @@ export default function RegisterForm() {
             disabled={isLoading}
             className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-2 px-4 rounded-md transition-colors"
           >
-            {isLoading ? 'Inscription...' : 'S\'inscrire'}
+            {isLoading ? 'Inscription...' : "S'inscrire"}
           </button>
         </form>
 
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
             Vous avez déjà un compte ?{' '}
-            <a href="/login" className="text-blue-600 hover:text-blue-700 font-medium">
+            <Link
+              to="/login"
+              className="text-blue-600 hover:text-blue-700 font-medium"
+            >
               Se connecter
-            </a>
+            </Link>
           </p>
         </div>
       </div>
