@@ -1,52 +1,6 @@
 import { create } from 'zustand'
-
-// Types matching API response format (snake_case as per project-context.md)
-export interface Race {
-  id: number
-  season: number
-  round: number
-  name: string
-  circuit_name: string
-  country: string
-  date: string
-  status: string
-  data_imported: boolean
-  imported_at?: string
-}
-
-export interface Circuit {
-  id: number
-  name: string
-  country: string
-  length_km: number
-  turns: number
-  track_map_data?: string
-}
-
-export interface Driver {
-  id: number
-  driver_number: number
-  code: string
-  first_name: string
-  last_name: string
-  team: string
-}
-
-export interface LapData {
-  race_id: number
-  driver_id: number
-  lap_number: number
-  position: number
-  lap_time_seconds: number
-  sector_times: {
-    sector1: number
-    sector2: number
-    sector3: number
-  }
-  tire_compound: string
-  tire_age: number
-  gap_to_leader: number
-}
+import type { Race, Driver, LapData } from '@/types'
+import { mockRaces, mockDrivers, generateMockLapData } from '@/hooks/useMockData'
 
 interface RaceState {
   currentRace: Race | null
@@ -79,15 +33,11 @@ export const useRaceStore = create<RaceState>((set) => ({
     set({ isLoading: true, error: null })
     
     try {
-      const response = await fetch(`${API_BASE_URL}/api/v1/races`)
+      // Simulate API call with mock data
+      await new Promise(resolve => setTimeout(resolve, 500))
       
-      if (!response.ok) {
-        throw new Error('Failed to load races')
-      }
-      
-      const result = await response.json()
       set({ 
-        races: result.data,
+        races: mockRaces,
         isLoading: false 
       })
     } catch (error) {
@@ -121,19 +71,15 @@ export const useRaceStore = create<RaceState>((set) => ({
     }
   },
 
-  loadDrivers: async (raceId: number): Promise<void> => {
+  loadDrivers: async (_raceId: number): Promise<void> => {
     set({ isLoading: true, error: null })
     
     try {
-      const response = await fetch(`${API_BASE_URL}/api/v1/races/${raceId}/drivers`)
+      // Simulate API call with mock data
+      await new Promise(resolve => setTimeout(resolve, 300))
       
-      if (!response.ok) {
-        throw new Error('Failed to load drivers')
-      }
-      
-      const result = await response.json()
       set({ 
-        drivers: result.data,
+        drivers: mockDrivers,
         isLoading: false 
       })
     } catch (error) {
@@ -148,15 +94,16 @@ export const useRaceStore = create<RaceState>((set) => ({
     set({ isLoading: true, error: null })
     
     try {
-      const response = await fetch(`${API_BASE_URL}/api/v1/races/${raceId}/laps`)
+      // Simulate API call with mock data
+      await new Promise(resolve => setTimeout(resolve, 400))
       
-      if (!response.ok) {
-        throw new Error('Failed to load lap data')
-      }
+      // Generate mock lap data for the race
+      const race = mockRaces.find(r => r.id === raceId)
+      const totalLaps = race ? 50 : 50 // Default to 50 laps
+      const lapData = generateMockLapData(raceId, totalLaps)
       
-      const result = await response.json()
       set({ 
-        lapData: result.data,
+        lapData,
         isLoading: false 
       })
     } catch (error) {

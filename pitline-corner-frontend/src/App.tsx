@@ -4,6 +4,7 @@ import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
 import DashboardPage from './pages/DashboardPage'
 import DemoPage from './pages/DemoPage'
+import RaceLibraryPage from './pages/RaceLibraryPage'
 import './App.css'
 
 function App() {
@@ -15,6 +16,8 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/demo" element={<DemoPage />} />
+        <Route path="/library" element={<RaceLibraryPage />} />
+        <Route path="/race/:raceId" element={<RaceLibraryPage />} />
       </Routes>
     </Router>
   )
