@@ -5,6 +5,7 @@ import { vi, beforeAll } from 'vitest'
 beforeAll(() => {
   // Mock document.head.appendChild to prevent font loading
   const originalAppendChild = document.head.appendChild
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   document.head.appendChild = vi.fn((element: any): any => {
     // Prevent font link elements from being added
     if (element instanceof HTMLLinkElement && element.href.includes('fonts.googleapis.com')) {

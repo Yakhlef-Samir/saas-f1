@@ -87,7 +87,9 @@ describe('RegisterForm', () => {
     useAuthStore.setState({ error: 'Cet email est déjà utilisé' })
     renderWithRouter(<RegisterForm />)
 
-    expect(screen.getByText('Cet email est déjà utilisé')).toBeInTheDocument()
+    const errorElement = document.getElementById('email-field-error')
+    expect(errorElement).toBeInTheDocument()
+    expect(errorElement?.textContent).toBe('Cet email est déjà utilisé')
   })
 
   it('should disable submit button when loading', () => {
@@ -109,14 +111,16 @@ describe('RegisterForm', () => {
     useAuthStore.setState({ error: 'Some error' })
     renderWithRouter(<RegisterForm />)
 
-    expect(screen.getByText('Some error')).toBeInTheDocument()
+    const errorElement = document.getElementById('email-field-error')
+    expect(errorElement).toBeInTheDocument()
+    expect(errorElement?.textContent).toBe('Some error')
 
     const emailInput = screen.getByLabelText('Email du pilote')
     fireEvent.change(emailInput, { target: { value: 't' } })
 
     // Error should be cleared
     await waitFor(() => {
-      expect(screen.queryByText('Some error')).not.toBeInTheDocument()
+      expect(document.getElementById('email-field-error')).not.toBeInTheDocument()
     })
   })
 })
