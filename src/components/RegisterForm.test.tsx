@@ -34,17 +34,17 @@ describe('RegisterForm', () => {
   it('should render registration form with all fields', () => {
     renderWithRouter(<RegisterForm />)
 
-    expect(screen.getByText('Créer un compte')).toBeInTheDocument()
-    expect(screen.getByLabelText('Email')).toBeInTheDocument()
+    expect(screen.getByText('Grille de Départ')).toBeInTheDocument()
+    expect(screen.getByLabelText('Email du pilote')).toBeInTheDocument()
     expect(screen.getByLabelText('Mot de passe')).toBeInTheDocument()
-    expect(screen.getByLabelText('Confirmer le mot de passe')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: "S'inscrire" })).toBeInTheDocument()
+    expect(screen.getByLabelText('Confirmation du mot de passe')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: "S'inscrire à Pitline Corner" })).toBeInTheDocument()
   })
 
   it('should render login link', () => {
     renderWithRouter(<RegisterForm />)
 
-    const loginLink = screen.getByText('Se connecter')
+    const loginLink = screen.getByText('Déjà sur la grille ?')
     expect(loginLink).toBeInTheDocument()
     expect(loginLink).toHaveAttribute('href', '/login')
   })
@@ -52,11 +52,9 @@ describe('RegisterForm', () => {
   it('should update form fields on user input', () => {
     renderWithRouter(<RegisterForm />)
 
-    const emailInput = screen.getByLabelText('Email') as HTMLInputElement
+    const emailInput = screen.getByLabelText('Email du pilote') as HTMLInputElement
     const passwordInput = screen.getByLabelText('Mot de passe') as HTMLInputElement
-    const confirmInput = screen.getByLabelText(
-      'Confirmer le mot de passe'
-    ) as HTMLInputElement
+    const confirmInput = screen.getByLabelText('Confirmation du mot de passe') as HTMLInputElement
 
     fireEvent.change(emailInput, { target: { value: 'test@example.com' } })
     fireEvent.change(passwordInput, { target: { value: 'password123' } })
@@ -70,16 +68,16 @@ describe('RegisterForm', () => {
   it('should have required attributes on form fields', () => {
     renderWithRouter(<RegisterForm />)
 
-    expect(screen.getByLabelText('Email')).toBeRequired()
+    expect(screen.getByLabelText('Email du pilote')).toBeRequired()
     expect(screen.getByLabelText('Mot de passe')).toBeRequired()
-    expect(screen.getByLabelText('Confirmer le mot de passe')).toBeRequired()
+    expect(screen.getByLabelText('Confirmation du mot de passe')).toBeRequired()
   })
 
   it('should have minLength attribute on password fields', () => {
     renderWithRouter(<RegisterForm />)
 
     const passwordInput = screen.getByLabelText('Mot de passe')
-    const confirmInput = screen.getByLabelText('Confirmer le mot de passe')
+    const confirmInput = screen.getByLabelText('Confirmation du mot de passe')
 
     expect(passwordInput).toHaveAttribute('minLength', '8')
     expect(confirmInput).toHaveAttribute('minLength', '8')
@@ -96,7 +94,7 @@ describe('RegisterForm', () => {
     useAuthStore.setState({ isLoading: true })
     renderWithRouter(<RegisterForm />)
 
-    const button = screen.getByRole('button', { name: 'Inscription...' })
+    const button = screen.getByRole('button', { name: "S'inscrire à Pitline Corner" })
     expect(button).toBeDisabled()
   })
 
@@ -104,7 +102,7 @@ describe('RegisterForm', () => {
     useAuthStore.setState({ isLoading: true })
     renderWithRouter(<RegisterForm />)
 
-    expect(screen.getByText('Inscription...')).toBeInTheDocument()
+    expect(screen.getByText('GO ! GO ! GO !')).toBeInTheDocument()
   })
 
   it('should clear error when user starts typing', async () => {
@@ -113,7 +111,7 @@ describe('RegisterForm', () => {
 
     expect(screen.getByText('Some error')).toBeInTheDocument()
 
-    const emailInput = screen.getByLabelText('Email')
+    const emailInput = screen.getByLabelText('Email du pilote')
     fireEvent.change(emailInput, { target: { value: 't' } })
 
     // Error should be cleared

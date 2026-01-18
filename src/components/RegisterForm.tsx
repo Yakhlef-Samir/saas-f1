@@ -243,6 +243,7 @@ export default function RegisterForm() {
                 value={formData.email}
                 onChange={handleChange}
                 required
+                minLength={5}
                 placeholder="votre@ecurie.com"
                 aria-label="Email du pilote"
                 aria-describedby="email-error"
@@ -295,6 +296,7 @@ export default function RegisterForm() {
                 value={formData.password}
                 onChange={handleChange}
                 required
+                minLength={8}
                 placeholder="••••••••"
                 aria-label="Mot de passe"
                 aria-describedby="password-strength"
@@ -382,6 +384,7 @@ export default function RegisterForm() {
                 value={formData.password_confirm}
                 onChange={handleChange}
                 required
+                minLength={8}
                 placeholder="••••••••"
                 aria-label="Confirmation du mot de passe"
                 style={{
