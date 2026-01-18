@@ -6,6 +6,11 @@ interface FormData {
   email: string
   password: string
   password_confirm: string
+  first_name?: string
+  last_name?: string
+  display_name?: string
+  country?: string
+  favorite_f1_team?: string
 }
 
 export default function RegisterForm() {
@@ -19,11 +24,17 @@ export default function RegisterForm() {
     email: '',
     password: '',
     password_confirm: '',
+    first_name: '',
+    last_name: '',
+    display_name: '',
+    country: '',
+    favorite_f1_team: '',
   })
 
-    const [isFormValid, setIsFormValid] = useState(false)
+  const [isFormValid, setIsFormValid] = useState(false)
   const [passwordStrength, setPasswordStrength] = useState(0)
   const [showSuccess, setShowSuccess] = useState(false)
+  const [showOptionalFields, setShowOptionalFields] = useState(false)
 
   // Email validation
   const validateEmail = (email: string) => {
@@ -72,7 +83,7 @@ export default function RegisterForm() {
     setIsFormValid(formValidation.isFormValid)
   }, [formValidation])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
     if (error) {
@@ -161,7 +172,8 @@ export default function RegisterForm() {
         borderLeft: '2px solid rgba(255, 255, 255, 0.2)',
         borderTop: '2px solid rgba(255, 255, 255, 0.2)',
         width: '100%',
-        maxWidth: '450px'
+        maxWidth: showOptionalFields ? '650px' : '450px',
+        transition: 'max-width 0.5s ease-in-out'
       }}>
         {/* Texture fibre de carbone */}
         <div style={{
@@ -214,6 +226,7 @@ export default function RegisterForm() {
           )}
 
           <form onSubmit={handleSubmit}>
+            {!showOptionalFields && (
             <div style={{ marginBottom: '25px', position: 'relative' }}>
               <label style={{
                 display: 'block',
@@ -232,9 +245,10 @@ export default function RegisterForm() {
                 value={formData.email}
                 onChange={handleChange}
                 required
+                minLength={5}
                 placeholder="votre@ecurie.com"
                 aria-label="Email du pilote"
-                aria-describedby="email-error"
+                aria-describedby="email-field-error"
                 aria-invalid={!!error}
                 style={{
                   width: '100%',
@@ -254,18 +268,35 @@ export default function RegisterForm() {
                   target.style.borderLeftColor = '#dc0000'
                   target.style.borderBottomColor = '#dc0000'
                   target.style.boxShadow = '0 0 15px rgba(220, 0, 0, 0.5)'
-                  target.style.background = 'rgba(20, 0, 0, 0.8)'
+                  target.style.backgroundColor = 'rgba(20, 0, 0, 0.8)'
                 }}
                 onBlur={(e) => {
                   const target = e.target as HTMLInputElement
                   target.style.borderLeftColor = '#555'
                   target.style.borderBottomColor = '#555'
                   target.style.boxShadow = 'none'
-                  target.style.background = 'rgba(0, 0, 0, 0.6)'
+                  target.style.backgroundColor = 'rgba(0, 0, 0, 0.6)'
                 }}
               />
+              {error && (
+                <div 
+                  id="email-field-error" 
+                  style={{ 
+                    color: '#dc0000', 
+                    fontSize: '12px', 
+                    marginTop: '5px',
+                    fontFamily: 'Orbitron, sans-serif',
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px'
+                  }}
+                >
+                  {error}
+                </div>
+              )}
             </div>
+          )}
 
+          {!showOptionalFields && (
             <div style={{ marginBottom: '25px', position: 'relative' }}>
               <label style={{
                 display: 'block',
@@ -284,6 +315,7 @@ export default function RegisterForm() {
                 value={formData.password}
                 onChange={handleChange}
                 required
+                minLength={8}
                 placeholder="••••••••"
                 aria-label="Mot de passe"
                 aria-describedby="password-strength"
@@ -305,17 +337,16 @@ export default function RegisterForm() {
                   target.style.borderLeftColor = '#dc0000'
                   target.style.borderBottomColor = '#dc0000'
                   target.style.boxShadow = '0 0 15px rgba(220, 0, 0, 0.5)'
-                  target.style.background = 'rgba(20, 0, 0, 0.8)'
+                  target.style.backgroundColor = 'rgba(20, 0, 0, 0.8)'
                 }}
                 onBlur={(e) => {
                   const target = e.target as HTMLInputElement
                   target.style.borderLeftColor = '#555'
                   target.style.borderBottomColor = '#555'
                   target.style.boxShadow = 'none'
-                  target.style.background = 'rgba(0, 0, 0, 0.6)'
+                  target.style.backgroundColor = 'rgba(0, 0, 0, 0.6)'
                 }}
               />
-              
               {/* Password strength indicator */}
               {formData.password && (
                 <div id="password-strength" style={{ marginTop: '8px' }}>
@@ -352,7 +383,9 @@ export default function RegisterForm() {
                 </div>
               )}
             </div>
+          )}
 
+          {!showOptionalFields && (
             <div style={{ marginBottom: '25px', position: 'relative' }}>
               <label style={{
                 display: 'block',
@@ -371,6 +404,7 @@ export default function RegisterForm() {
                 value={formData.password_confirm}
                 onChange={handleChange}
                 required
+                minLength={8}
                 placeholder="••••••••"
                 aria-label="Confirmation du mot de passe"
                 style={{
@@ -391,16 +425,316 @@ export default function RegisterForm() {
                   target.style.borderLeftColor = '#dc0000'
                   target.style.borderBottomColor = '#dc0000'
                   target.style.boxShadow = '0 0 15px rgba(220, 0, 0, 0.5)'
-                  target.style.background = 'rgba(20, 0, 0, 0.8)'
+                  target.style.backgroundColor = 'rgba(20, 0, 0, 0.8)'
                 }}
                 onBlur={(e) => {
                   const target = e.target as HTMLInputElement
                   target.style.borderLeftColor = '#555'
                   target.style.borderBottomColor = '#555'
                   target.style.boxShadow = 'none'
-                  target.style.background = 'rgba(0, 0, 0, 0.6)'
+                  target.style.backgroundColor = 'rgba(0, 0, 0, 0.6)'
                 }}
               />
+            </div>
+          )}
+
+            {/* Section optionnelle - Profil du Pilote */}
+            <div style={{
+              marginTop: '30px',
+              padding: '20px',
+              backgroundColor: 'rgba(0, 0, 0, 0.3)',
+              borderRadius: '10px',
+              border: '1px solid rgba(220, 0, 0, 0.2)'
+            }}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '20px'
+              }}>
+                <h3 style={{
+                  color: '#dc0000',
+                  fontSize: '1.1em',
+                  fontFamily: 'Russo One, sans-serif',
+                  textTransform: 'uppercase',
+                  letterSpacing: '1px'
+                }}>
+                  Profil du Pilote (Optionnel)
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setShowOptionalFields(!showOptionalFields)}
+                  style={{
+                    background: 'none',
+                    border: '1px solid #dc0000',
+                    color: '#dc0000',
+                    padding: '5px 15px',
+                    borderRadius: '5px',
+                    cursor: 'pointer',
+                    fontFamily: 'Orbitron, sans-serif',
+                    fontSize: '0.9em',
+                    transition: 'all 0.3s ease'
+                  }}
+                >
+                  {showOptionalFields ? 'Masquer' : 'Afficher'}
+                </button>
+              </div>
+
+              {showOptionalFields && (
+                <div style={{ 
+                  display: 'grid', 
+                  gridTemplateColumns: '1fr 1fr', 
+                  gap: '25px',
+                  marginBottom: '25px',
+                  padding: '10px'
+                }}>
+                  <div>
+                    <label style={{
+                      display: 'block',
+                      color: '#dc0000',
+                      fontSize: '0.9em',
+                      fontWeight: 'bold',
+                      marginBottom: '8px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '1px'
+                    }}>
+                      Prénom du Pilote
+                    </label>
+                    <input
+                      type="text"
+                      name="first_name"
+                      value={formData.first_name}
+                      onChange={handleChange}
+                      placeholder="Votre prénom"
+                      style={{
+                        width: '100%',
+                        padding: '15px',
+                        background: 'rgba(0, 0, 0, 0.6)',
+                        color: '#e0e0e0',
+                        fontFamily: 'Orbitron, sans-serif',
+                        fontSize: '1.1em',
+                        border: 'none',
+                        borderBottom: '2px solid #555',
+                        borderLeft: '5px solid #555',
+                        borderRadius: '0',
+                        transition: 'all 0.3s ease',
+                        boxSizing: 'border-box'
+                      }}
+                      onFocus={(e) => {
+                        const target = e.target as HTMLInputElement
+                        target.style.borderLeftColor = '#dc0000'
+                        target.style.borderBottomColor = '#dc0000'
+                        target.style.boxShadow = '0 0 15px rgba(220, 0, 0, 0.5)'
+                        target.style.backgroundColor = 'rgba(20, 0, 0, 0.8)'
+                      }}
+                      onBlur={(e) => {
+                        const target = e.target as HTMLInputElement
+                        target.style.borderLeftColor = '#555'
+                        target.style.borderBottomColor = '#555'
+                        target.style.boxShadow = 'none'
+                        target.style.backgroundColor = 'rgba(0, 0, 0, 0.6)'
+                      }}
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{
+                      display: 'block',
+                      color: '#dc0000',
+                      fontSize: '0.9em',
+                      fontWeight: 'bold',
+                      marginBottom: '8px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '1px'
+                    }}>
+                      Nom du Pilote
+                    </label>
+                    <input
+                      type="text"
+                      name="last_name"
+                      value={formData.last_name}
+                      onChange={handleChange}
+                      placeholder="Votre nom"
+                      style={{
+                        width: '100%',
+                        padding: '15px',
+                        background: 'rgba(0, 0, 0, 0.6)',
+                        color: '#e0e0e0',
+                        fontFamily: 'Orbitron, sans-serif',
+                        fontSize: '1.1em',
+                        border: 'none',
+                        borderBottom: '2px solid #555',
+                        borderLeft: '5px solid #555',
+                        borderRadius: '0',
+                        transition: 'all 0.3s ease',
+                        boxSizing: 'border-box'
+                      }}
+                      onFocus={(e) => {
+                        const target = e.target as HTMLInputElement
+                        target.style.borderLeftColor = '#dc0000'
+                        target.style.borderBottomColor = '#dc0000'
+                        target.style.boxShadow = '0 0 15px rgba(220, 0, 0, 0.5)'
+                        target.style.backgroundColor = 'rgba(20, 0, 0, 0.8)'
+                      }}
+                      onBlur={(e) => {
+                        const target = e.target as HTMLInputElement
+                        target.style.borderLeftColor = '#555'
+                        target.style.borderBottomColor = '#555'
+                        target.style.boxShadow = 'none'
+                        target.style.backgroundColor = 'rgba(0, 0, 0, 0.6)'
+                      }}
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{
+                      display: 'block',
+                      color: '#dc0000',
+                      fontSize: '0.9em',
+                      fontWeight: 'bold',
+                      marginBottom: '8px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '1px'
+                    }}>
+                      Pseudo Course
+                    </label>
+                    <input
+                      type="text"
+                      name="display_name"
+                      value={formData.display_name}
+                      onChange={handleChange}
+                      placeholder="Votre pseudo"
+                      style={{
+                        width: '100%',
+                        padding: '15px',
+                        background: 'rgba(0, 0, 0, 0.6)',
+                        color: '#e0e0e0',
+                        fontFamily: 'Orbitron, sans-serif',
+                        fontSize: '1.1em',
+                        border: 'none',
+                        borderBottom: '2px solid #555',
+                        borderLeft: '5px solid #555',
+                        borderRadius: '0',
+                        transition: 'all 0.3s ease',
+                        boxSizing: 'border-box'
+                      }}
+                      onFocus={(e) => {
+                        const target = e.target as HTMLInputElement
+                        target.style.borderLeftColor = '#dc0000'
+                        target.style.borderBottomColor = '#dc0000'
+                        target.style.boxShadow = '0 0 15px rgba(220, 0, 0, 0.5)'
+                        target.style.backgroundColor = 'rgba(20, 0, 0, 0.8)'
+                      }}
+                      onBlur={(e) => {
+                        const target = e.target as HTMLInputElement
+                        target.style.borderLeftColor = '#555'
+                        target.style.borderBottomColor = '#555'
+                        target.style.boxShadow = 'none'
+                        target.style.backgroundColor = 'rgba(0, 0, 0, 0.6)'
+                      }}
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{
+                      display: 'block',
+                      color: '#dc0000',
+                      fontSize: '0.9em',
+                      fontWeight: 'bold',
+                      marginBottom: '8px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '1px'
+                    }}>
+                      Nationalité
+                    </label>
+                    <select
+                      name="country"
+                      value={formData.country}
+                      onChange={handleChange}
+                      style={{
+                        width: '100%',
+                        padding: '15px',
+                        background: 'rgba(0, 0, 0, 0.6)',
+                        color: '#e0e0e0',
+                        fontFamily: 'Orbitron, sans-serif',
+                        fontSize: '1.1em',
+                        border: 'none',
+                        borderBottom: '2px solid #555',
+                        borderLeft: '5px solid #555',
+                        borderRadius: '0',
+                        transition: 'all 0.3s ease',
+                        boxSizing: 'border-box',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <option value="">Sélectionner...</option>
+                      <option value="Maroc">Maroc</option>
+                      <option value="France">France</option>
+                      <option value="Belgium">Belgique</option>
+                      <option value="Switzerland">Suisse</option>
+                      <option value="Monaco">Monaco</option>
+                      <option value="Canada">Canada</option>
+                      <option value="USA">États-Unis</option>
+                      <option value="UK">Royaume-Uni</option>
+                      <option value="Germany">Allemagne</option>
+                      <option value="Italy">Italie</option>
+                      <option value="Spain">Espagne</option>
+                      <option value="Netherlands">Pays-Bas</option>
+                      <option value="Japan">Japon</option>
+                      <option value="Australia">Australie</option>
+                      <option value="Brazil">Brésil</option>
+                      <option value="Mexico">Mexique</option>
+                      <option value="Other">Autre</option>
+                    </select>
+                  </div>
+
+                  <div style={{ gridColumn: '1 / -1' }}>
+                    <label style={{
+                      display: 'block',
+                      color: '#dc0000',
+                      fontSize: '0.9em',
+                      fontWeight: 'bold',
+                      marginBottom: '8px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '1px'
+                    }}>
+                      Écurie F1 Préférée
+                    </label>
+                    <select
+                      name="favorite_f1_team"
+                      value={formData.favorite_f1_team}
+                      onChange={handleChange}
+                      style={{
+                        width: '100%',
+                        padding: '15px',
+                        background: 'rgba(0, 0, 0, 0.6)',
+                        color: '#e0e0e0',
+                        fontFamily: 'Orbitron, sans-serif',
+                        fontSize: '1.1em',
+                        border: 'none',
+                        borderBottom: '2px solid #555',
+                        borderLeft: '5px solid #555',
+                        borderRadius: '0',
+                        transition: 'all 0.3s ease',
+                        boxSizing: 'border-box',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <option value="">Sélectionner une écurie...</option>
+                      <option value="Mercedes">Mercedes</option>
+                      <option value="Red Bull Racing">Red Bull Racing</option>
+                      <option value="Ferrari">Ferrari</option>
+                      <option value="McLaren">McLaren</option>
+                      <option value="Alpine">Alpine</option>
+                      <option value="Aston Martin">Aston Martin</option>
+                      <option value="Williams">Williams</option>
+                      <option value="RB">RB</option>
+                      <option value="Haas">Haas</option>
+                      <option value="Sauber">Sauber</option>
+                    </select>
+                  </div>
+                </div>
+              )}
             </div>
 
             <button
@@ -412,10 +746,14 @@ export default function RegisterForm() {
                 width: '100%',
                 padding: '15px',
                 marginTop: '20px',
-                background: !isFormValid || isLoading 
+                backgroundColor: !isFormValid || isLoading 
                   ? '#666666' 
+                  : '#dc0000',
+                backgroundImage: !isFormValid || isLoading 
+                  ? 'none'
                   : 'linear-gradient(90deg, #a00000 0%, #dc0000 50%, #a00000 100%)',
                 backgroundSize: '200% auto',
+                backgroundPosition: 'left center',
                 color: 'white',
                 fontFamily: 'Russo One, sans-serif',
                 fontSize: '1.5em',
@@ -488,8 +826,10 @@ export default function RegisterForm() {
         </div>
       </div>
 
-      {/* Google Fonts */}
-      <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Russo+One&display=swap" rel="stylesheet" />
+      {/* Google Fonts - only load in non-test environment */}
+      {!import.meta.env.TEST && (
+        <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Russo+One&display=swap" rel="stylesheet" />
+      )}
       
       {/* Success Animation */}
       {showSuccess && (
