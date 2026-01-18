@@ -6,12 +6,22 @@ export interface User {
   id: number
   email: string
   tier: string
+  first_name?: string
+  last_name?: string
+  display_name?: string
+  country?: string
+  favorite_f1_team?: string
 }
 
 interface RegisterData {
   email: string
   password: string
   password_confirm: string
+  first_name?: string
+  last_name?: string
+  display_name?: string
+  country?: string
+  favorite_f1_team?: string
 }
 
 interface AuthResponse {
