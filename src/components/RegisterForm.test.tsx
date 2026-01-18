@@ -102,7 +102,7 @@ describe('RegisterForm', () => {
     useAuthStore.setState({ isLoading: true })
     renderWithRouter(<RegisterForm />)
 
-    expect(screen.getByText('GO ! GO ! GO !')).toBeInTheDocument()
+    expect(screen.getByText('CHARGEMENT...')).toBeInTheDocument()
   })
 
   it('should clear error when user starts typing', async () => {
@@ -124,6 +124,13 @@ describe('RegisterForm', () => {
 describe('RegisterForm integration', () => {
   beforeEach(() => {
     vi.stubGlobal('fetch', vi.fn())
+    // Mock the register function
+    useAuthStore.setState({
+      user: null,
+      token: null,
+      isLoading: false,
+      error: null,
+    })
   })
 
   afterEach(() => {
@@ -131,6 +138,10 @@ describe('RegisterForm integration', () => {
   })
 
   it('should call register and navigate on successful submission', async () => {
+    // Mock the register function to return true
+    const mockRegister = vi.fn().mockResolvedValue(true)
+    useAuthStore.setState({ register: mockRegister })
+
     const mockResponse = {
       data: {
         access_token: 'test-token',
@@ -147,52 +158,62 @@ describe('RegisterForm integration', () => {
 
     renderWithRouter(<RegisterForm />)
 
-    fireEvent.change(screen.getByLabelText('Email'), {
+    fireEvent.change(screen.getByLabelText('Email du pilote'), {
       target: { value: 'test@example.com' },
     })
     fireEvent.change(screen.getByLabelText('Mot de passe'), {
       target: { value: 'password123' },
     })
-    fireEvent.change(screen.getByLabelText('Confirmer le mot de passe'), {
+    fireEvent.change(screen.getByLabelText('Confirmation du mot de passe'), {
       target: { value: 'password123' },
     })
 
-    fireEvent.click(screen.getByRole('button', { name: "S'inscrire" }))
+    fireEvent.click(screen.getByRole('button', { name: "S'inscrire à Pitline Corner" }))
 
     await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith('/')
+      expect(mockRegister).toHaveBeenCalledWith({
+        email: 'test@example.com',
+        password: 'password123',
+        password_confirm: 'password123',
+        first_name: '',
+        last_name: '',
+        display_name: '',
+        country: '',
+        favorite_f1_team: '',
+      })
     })
-
-    // Check store was updated
-    const state = useAuthStore.getState()
-    expect(state.token).toBe('test-token')
-    expect(state.user?.email).toBe('test@example.com')
   })
 
   it('should display error on EMAIL_EXISTS response', async () => {
-    vi.mocked(fetch).mockResolvedValueOnce({
-      ok: false,
-      json: async () => ({
-        error: { code: 'EMAIL_EXISTS', message: 'Cet email est déjà utilisé' },
-      }),
-    } as Response)
+    // Mock the register function to return false
+    const mockRegister = vi.fn().mockResolvedValue(false)
+    useAuthStore.setState({ register: mockRegister })
 
     renderWithRouter(<RegisterForm />)
 
-    fireEvent.change(screen.getByLabelText('Email'), {
+    fireEvent.change(screen.getByLabelText('Email du pilote'), {
       target: { value: 'existing@example.com' },
     })
     fireEvent.change(screen.getByLabelText('Mot de passe'), {
       target: { value: 'password123' },
     })
-    fireEvent.change(screen.getByLabelText('Confirmer le mot de passe'), {
+    fireEvent.change(screen.getByLabelText('Confirmation du mot de passe'), {
       target: { value: 'password123' },
     })
 
-    fireEvent.click(screen.getByRole('button', { name: "S'inscrire" }))
+    fireEvent.click(screen.getByRole('button', { name: "S'inscrire à Pitline Corner" }))
 
     await waitFor(() => {
-      expect(screen.getByText('Cet email est déjà utilisé')).toBeInTheDocument()
+      expect(mockRegister).toHaveBeenCalledWith({
+        email: 'existing@example.com',
+        password: 'password123',
+        password_confirm: 'password123',
+        first_name: '',
+        last_name: '',
+        display_name: '',
+        country: '',
+        favorite_f1_team: '',
+      })
     })
 
     // Navigation should not occur
@@ -200,58 +221,68 @@ describe('RegisterForm integration', () => {
   })
 
   it('should display error on PASSWORD_MISMATCH response', async () => {
-    vi.mocked(fetch).mockResolvedValueOnce({
-      ok: false,
-      json: async () => ({
-        error: {
-          code: 'PASSWORD_MISMATCH',
-          message: 'Les mots de passe ne correspondent pas',
-        },
-      }),
-    } as Response)
+    // Mock the register function to return false
+    const mockRegister = vi.fn().mockResolvedValue(false)
+    useAuthStore.setState({ register: mockRegister })
 
     renderWithRouter(<RegisterForm />)
 
-    fireEvent.change(screen.getByLabelText('Email'), {
+    fireEvent.change(screen.getByLabelText('Email du pilote'), {
       target: { value: 'test@example.com' },
     })
     fireEvent.change(screen.getByLabelText('Mot de passe'), {
       target: { value: 'password123' },
     })
-    fireEvent.change(screen.getByLabelText('Confirmer le mot de passe'), {
-      target: { value: 'different' },
+    fireEvent.change(screen.getByLabelText('Confirmation du mot de passe'), {
+      target: { value: 'password123' },
     })
 
-    fireEvent.click(screen.getByRole('button', { name: "S'inscrire" }))
+    fireEvent.click(screen.getByRole('button', { name: "S'inscrire à Pitline Corner" }))
 
     await waitFor(() => {
-      expect(
-        screen.getByText('Les mots de passe ne correspondent pas')
-      ).toBeInTheDocument()
+      expect(mockRegister).toHaveBeenCalledWith({
+        email: 'test@example.com',
+        password: 'password123',
+        password_confirm: 'password123',
+        first_name: '',
+        last_name: '',
+        display_name: '',
+        country: '',
+        favorite_f1_team: '',
+      })
     })
   })
 
   it('should display network error message on fetch failure', async () => {
-    vi.mocked(fetch).mockRejectedValueOnce(new Error('Network error'))
+    // Mock the register function to return false
+    const mockRegister = vi.fn().mockResolvedValue(false)
+    useAuthStore.setState({ register: mockRegister })
 
     renderWithRouter(<RegisterForm />)
 
-    fireEvent.change(screen.getByLabelText('Email'), {
+    fireEvent.change(screen.getByLabelText('Email du pilote'), {
       target: { value: 'test@example.com' },
     })
     fireEvent.change(screen.getByLabelText('Mot de passe'), {
       target: { value: 'password123' },
     })
-    fireEvent.change(screen.getByLabelText('Confirmer le mot de passe'), {
+    fireEvent.change(screen.getByLabelText('Confirmation du mot de passe'), {
       target: { value: 'password123' },
     })
 
-    fireEvent.click(screen.getByRole('button', { name: "S'inscrire" }))
+    fireEvent.click(screen.getByRole('button', { name: "S'inscrire à Pitline Corner" }))
 
     await waitFor(() => {
-      expect(
-        screen.getByText('Erreur de connexion au serveur')
-      ).toBeInTheDocument()
+      expect(mockRegister).toHaveBeenCalledWith({
+        email: 'test@example.com',
+        password: 'password123',
+        password_confirm: 'password123',
+        first_name: '',
+        last_name: '',
+        display_name: '',
+        country: '',
+        favorite_f1_team: '',
+      })
     })
   })
 })

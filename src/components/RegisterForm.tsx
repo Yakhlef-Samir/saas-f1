@@ -786,8 +786,10 @@ export default function RegisterForm() {
         </div>
       </div>
 
-      {/* Google Fonts */}
-      <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Russo+One&display=swap" rel="stylesheet" />
+      {/* Google Fonts - only load in non-test environment */}
+      {!import.meta.env.TEST && (
+        <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Russo+One&display=swap" rel="stylesheet" />
+      )}
       
       {/* Success Animation */}
       {showSuccess && (
