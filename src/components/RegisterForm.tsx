@@ -83,7 +83,7 @@ export default function RegisterForm() {
     setIsFormValid(formValidation.isFormValid)
   }, [formValidation])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
     if (error) {
@@ -612,7 +612,7 @@ export default function RegisterForm() {
                       <select
                         name="country"
                         value={formData.country || ''}
-                        onChange={(e) => handleChange(e as any)}
+                        onChange={handleChange}
                         style={{
                           width: '100%',
                           padding: '10px',
@@ -660,7 +660,7 @@ export default function RegisterForm() {
                       <select
                         name="favorite_f1_team"
                         value={formData.favorite_f1_team || ''}
-                        onChange={(e) => handleChange(e as any)}
+                        onChange={handleChange}
                         style={{
                           width: '100%',
                           padding: '10px',
