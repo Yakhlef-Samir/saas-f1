@@ -1,3 +1,6 @@
+/* Import F1 Premium Theme V1 */
+@import './styles/f1-theme.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
