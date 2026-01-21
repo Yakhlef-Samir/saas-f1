@@ -13,7 +13,7 @@ export interface Modal {
   type: 'upgrade' | 'error' | 'confirm' | 'info'
   title: string
   message?: string
-  data?: any
+  data?: Record<string, unknown>
 }
 
 interface UIState {

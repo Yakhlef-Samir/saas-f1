@@ -232,7 +232,12 @@ export function CircuitMap({
 
   // Update positions when lap changes
   useEffect(() => {
-    calculateDriverPositions()
+    // Use setTimeout to avoid calling setState synchronously in effect
+    const timeoutId = setTimeout(() => {
+      calculateDriverPositions()
+    }, 0)
+    
+    return () => clearTimeout(timeoutId)
   }, [calculateDriverPositions])
 
   // Redraw when positions change

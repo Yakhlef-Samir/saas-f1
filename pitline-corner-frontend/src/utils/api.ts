@@ -92,21 +92,21 @@ class ApiClient {
     return this.request<T>(endpoint, { method: 'GET' })
   }
 
-  async post<T>(endpoint: string, data?: any): Promise<ApiResponse<T>> {
+  async post<T>(endpoint: string, data?: Record<string, unknown>): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, {
       method: 'POST',
       body: data ? JSON.stringify(data) : undefined,
     })
   }
 
-  async put<T>(endpoint: string, data?: any): Promise<ApiResponse<T>> {
+  async put<T>(endpoint: string, data?: Record<string, unknown>): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, {
       method: 'PUT',
       body: data ? JSON.stringify(data) : undefined,
     })
   }
 
-  async patch<T>(endpoint: string, data?: any): Promise<ApiResponse<T>> {
+  async patch<T>(endpoint: string, data?: Record<string, unknown>): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, {
       method: 'PATCH',
       body: data ? JSON.stringify(data) : undefined,
@@ -124,9 +124,9 @@ export const apiClient = new ApiClient(API_BASE_URL)
 // Export convenience methods
 export const api = {
   get: <T>(endpoint: string) => apiClient.get<T>(endpoint),
-  post: <T>(endpoint: string, data?: any) => apiClient.post<T>(endpoint, data),
-  put: <T>(endpoint: string, data?: any) => apiClient.put<T>(endpoint, data),
-  patch: <T>(endpoint: string, data?: any) => apiClient.patch<T>(endpoint, data),
+  post: <T>(endpoint: string, data?: Record<string, unknown>) => apiClient.post<T>(endpoint, data),
+  put: <T>(endpoint: string, data?: Record<string, unknown>) => apiClient.put<T>(endpoint, data),
+  patch: <T>(endpoint: string, data?: Record<string, unknown>) => apiClient.patch<T>(endpoint, data),
   delete: <T>(endpoint: string) => apiClient.delete<T>(endpoint),
 }
 

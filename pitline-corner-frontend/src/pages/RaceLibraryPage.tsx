@@ -104,29 +104,6 @@ export default function RaceLibraryPage() {
   return (
     <MainLayout>
       <div className="f1-min-h-screen f1-bg-gray-50">
-        {/* Hero Section */}
-        <div className="f1-hero">
-          <div className="f1-container">
-            <div className="f1-hero-content f1-fade-in">
-              <div className="f1-badge">F1 RACE LIBRARY</div>
-              <h1 className="f1-title">
-                <span className="f1-title-gradient">Explorez les Courses F1</span>
-              </h1>
-              <p className="f1-subtitle">
-                Accédez à toutes les courses de Formule 1 avec analyses stratégiques détaillées, 
-                données de performance et simulations de courses.
-              </p>
-              <div className="f1-buttons">
-                <button className="f1-btn f1-btn-primary">
-                  Explorer les courses
-                </button>
-                <button className="f1-btn f1-btn-secondary">
-                  Voir les statistiques
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
 
         {/* Stats Section */}
         <div className="f1-stats">

@@ -13,6 +13,11 @@ export interface User {
   favorite_f1_team?: string
 }
 
+interface LoginData {
+  email: string
+  password: string
+}
+
 interface RegisterData {
   email: string
   password: string
@@ -47,6 +52,7 @@ interface AuthState {
   token: string | null
   isLoading: boolean
   error: string | null
+  login: (data: LoginData) => Promise<boolean>
   register: (data: RegisterData) => Promise<boolean>
   logout: () => void
   clearError: () => void
@@ -61,6 +67,54 @@ export const useAuthStore = create<AuthState>()(
       token: null,
       isLoading: false,
       error: null,
+
+      login: async (data: LoginData): Promise<boolean> => {
+        set({ isLoading: true, error: null })
+
+        try {
+          const response = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+          })
+
+          if (!response.ok) {
+            const errorData: ApiError = await response.json()
+            const errorCode = errorData.error?.code
+            const errorMessage = errorData.error?.message
+
+            let displayMessage = 'Erreur lors de la connexion'
+            if (errorCode === 'INVALID_CREDENTIALS') {
+              displayMessage = errorMessage || 'Email ou mot de passe incorrect'
+            } else if (errorCode === 'USER_NOT_FOUND') {
+              displayMessage = errorMessage || 'Utilisateur non trouvé'
+            }
+
+            set({ isLoading: false, error: displayMessage })
+            return false
+          }
+
+          const authResponse: AuthResponse = await response.json()
+          const { access_token, user } = authResponse.data
+
+          set({
+            user,
+            token: access_token,
+            isLoading: false,
+            error: null,
+          })
+
+          return true
+        } catch {
+          set({
+            isLoading: false,
+            error: 'Erreur de connexion au serveur',
+          })
+          return false
+        }
+      },
 
       register: async (data: RegisterData): Promise<boolean> => {
         set({ isLoading: true, error: null })
