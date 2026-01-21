@@ -57,8 +57,6 @@ export default function RegisterPage() {
           onSubmit={handleSubmit}
           isLoading={isLoading}
           error={error}
-          title="Inscription"
-          description="Rejoignez l'écurie Pitline Corner"
           submitText="S'inscrire"
           linkText="Déjà un pilote ? Connectez-vous"
           linkTo="/login"
