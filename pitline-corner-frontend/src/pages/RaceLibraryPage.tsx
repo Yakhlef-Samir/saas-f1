@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useLayoutEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import { AppLayout } from '@/components/layout/AppLayout'
@@ -37,13 +37,14 @@ export default function RaceLibraryPage() {
 
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedSeason, setSelectedSeason] = useState<number>(2024)
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('list')
   const [activeTab, setActiveTab] = useState<'all' | 'completed' | 'upcoming'>('all')
 
   // Set active tab from URL query parameter if provided
-  useEffect(() => {
+  useLayoutEffect(() => {
     const tab = searchParams.get('tab') as 'all' | 'completed' | 'upcoming' | null
     if (tab && ['all', 'completed', 'upcoming'].includes(tab)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setActiveTab(tab)
     }
   }, [searchParams])
