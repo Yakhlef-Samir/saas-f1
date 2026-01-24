@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useMemo, useEffect } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { useRaces, useRaceFilters } from '@/hooks/useRaces'
@@ -29,13 +29,22 @@ const formatDate = (date: string | Date | null | undefined): string => {
  */
 export default function RaceLibraryPage() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const { races, isLoading, error } = useRaces()
   const { getRacesBySeason, getCompletedRaces, getUpcomingRaces, searchRaces } = useRaceFilters()
-  
+
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedSeason, setSelectedSeason] = useState<number>(2024)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [activeTab, setActiveTab] = useState<'all' | 'completed' | 'upcoming'>('all')
+
+  // Set active tab from URL query parameter if provided
+  useEffect(() => {
+    const tab = searchParams.get('tab') as 'all' | 'completed' | 'upcoming' | null
+    if (tab && ['all', 'completed', 'upcoming'].includes(tab)) {
+      setActiveTab(tab)
+    }
+  }, [searchParams])
 
   // Filter races based on search and season
   const filteredRaces = useMemo(() => {

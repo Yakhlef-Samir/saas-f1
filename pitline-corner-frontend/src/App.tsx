@@ -6,7 +6,8 @@ import DashboardPage from './pages/DashboardPage'
 import RaceLibraryPage from './pages/RaceLibraryPage'
 import RaceDetailPage from './pages/RaceDetailPage'
 import PostRaceAnalysisPage from './pages/PostRaceAnalysisPage'
-import StrategyPage from './pages/StrategyPage'
+import NewSimulationPage from './pages/NewSimulationPage'
+import SimulationsListPage from './pages/SimulationsListPage'
 import AcademyPage from './pages/AcademyPage'
 import ProfilePage from './pages/ProfilePage'
 import './App.css'
@@ -26,9 +27,10 @@ function App() {
         <Route path="/analysis/:raceId" element={<PostRaceAnalysisPage />} />
 
         {/* Strategy & Simulations Routes */}
-        <Route path="/strategy" element={<StrategyPage />} />
-        <Route path="/simulations" element={<StrategyPage />} />
-        <Route path="/simulations/new" element={<StrategyPage />} />
+        <Route path="/strategy" element={<SimulationsListPage />} />
+        <Route path="/strategy/new" element={<NewSimulationPage />} />
+        <Route path="/simulations" element={<SimulationsListPage />} />
+        <Route path="/simulations/new" element={<NewSimulationPage />} />
 
         {/* Academy Routes */}
         <Route path="/academy" element={<AcademyPage />} />

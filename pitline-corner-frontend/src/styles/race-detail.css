@@ -1,0 +1,146 @@
+/* Race Detail Page - Specific Styles */
+/* Light theme with clear hierarchy: red for titles/emphasis, black for body text */
+
+.race-detail-container {
+  background: #ffffff !important;
+  min-height: 100vh;
+}
+
+/* Headings - RED for emphasis */
+.race-detail-container h1 {
+  color: #e10600 !important;
+}
+
+.race-detail-container h2 {
+  color: #000000 !important;
+}
+
+.race-detail-container h3 {
+  color: #151515 !important;
+}
+
+/* Body text - BLACK */
+.race-detail-container p {
+  color: #000000 !important;
+}
+
+/* Ensure text colors are correct */
+.race-detail-container .text-f1-red {
+  color: #e10600 !important;
+}
+
+.race-detail-container .text-f1-black {
+  color: #000000 !important;
+}
+
+.race-detail-container .text-f1-gray {
+  color: #6b7280 !important;
+}
+
+.race-detail-container .text-white,
+.race-detail-container .text-f1-white {
+  color: #0b0b0b !important;
+}
+
+.race-detail-container .text-red-800 {
+  color: #991b1b !important;
+}
+
+.race-detail-container .text-green-800 {
+  color: #166534 !important;
+}
+
+.race-detail-container .text-yellow-800 {
+  color: #854d0e !important;
+}
+
+/* Background sections */
+.race-detail-container .f1-stats {
+  background: #f5f5f5 !important;
+}
+
+.race-detail-container .f1-filters {
+  background: #ffffff !important;
+}
+
+/* Cards styling */
+.race-detail-container .f1-stat-card {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+.race-detail-container .bg-white {
+  background: #ffffff !important;
+}
+
+/* Tab buttons */
+.race-detail-container button {
+  color: #000000 !important;
+}
+
+.race-detail-container button:hover {
+  color: #000000 !important;
+}
+
+/* Colored stat cards - like Dashboard */
+.race-detail-container .f1-stat-card:nth-child(1) {
+  border-left: 4px solid #e10600;
+}
+
+.race-detail-container .f1-stat-card:nth-child(1) .f1-stat-icon {
+  color: #e10600;
+}
+
+.race-detail-container .f1-stat-card:nth-child(2) {
+  border-left: 4px solid #22c55e;
+}
+
+.race-detail-container .f1-stat-card:nth-child(2) .f1-stat-icon {
+  color: #22c55e;
+}
+
+.race-detail-container .f1-stat-card:nth-child(3) {
+  border-left: 4px solid #f59e0b;
+}
+
+.race-detail-container .f1-stat-card:nth-child(3) .f1-stat-icon {
+  color: #f59e0b;
+}
+
+.race-detail-container .f1-stat-card:nth-child(4) {
+  border-left: 4px solid #3b82f6;
+}
+
+.race-detail-container .f1-stat-card:nth-child(4) .f1-stat-icon {
+  color: #3b82f6;
+}
+
+/* Ensure stat values get colored text - override Tailwind */
+.race-detail-container .f1-stat-card:nth-child(1) p {
+  color: #e10600 !important;
+}
+
+.race-detail-container .f1-stat-card:nth-child(2) p {
+  color: #22c55e !important;
+}
+
+.race-detail-container .f1-stat-card:nth-child(3) p {
+  color: #f59e0b !important;
+}
+
+.race-detail-container .f1-stat-card:nth-child(4) p {
+  color: #3b82f6 !important;
+}
+
+/* Also override text-f1-red class specifically in stat cards */
+.race-detail-container .f1-stat-card:nth-child(2) .text-f1-red {
+  color: #22c55e !important;
+}
+
+.race-detail-container .f1-stat-card:nth-child(3) .text-f1-red {
+  color: #f59e0b !important;
+}
+
+.race-detail-container .f1-stat-card:nth-child(4) .text-f1-red {
+  color: #3b82f6 !important;
+}

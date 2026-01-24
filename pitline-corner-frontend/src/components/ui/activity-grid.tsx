@@ -1,5 +1,6 @@
 "use client"
 
+import { useNavigate } from 'react-router-dom'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 interface ActivityCardProps {
@@ -12,11 +13,12 @@ interface ActivityCardProps {
     value: string
     icon: React.ReactNode
   }>
+  onClick?: () => void
 }
 
-export function ActivityCard({ title, circuit, badge, badgeVariant = "default", meta }: ActivityCardProps) {
+export function ActivityCard({ title, circuit, badge, badgeVariant = "default", meta, onClick }: ActivityCardProps) {
   return (
-    <Card className="f1-race-card f1-transform">
+    <Card className="f1-race-card f1-transform cursor-pointer hover:opacity-80 transition-opacity" onClick={onClick}>
       <div className="f1-race-card-image">
         <div className="f1-race-card-image-placeholder">
           {badge === "TERMINÉE" && "🏁"}
@@ -46,6 +48,8 @@ export function ActivityCard({ title, circuit, badge, badgeVariant = "default", 
 }
 
 export function ActivityGrid() {
+  const navigate = useNavigate()
+
   const activities = [
     {
       title: "Course terminée",
@@ -55,7 +59,8 @@ export function ActivityGrid() {
       meta: [
         { label: "Position:", value: "P5", icon: <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg> },
         { label: "Points:", value: "+10", icon: <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg> }
-      ]
+      ],
+      onClick: () => navigate('/library?tab=completed')
     },
     {
       title: "Nouvelle stratégie",
@@ -65,7 +70,8 @@ export function ActivityGrid() {
       meta: [
         { label: "Gain:", value: "+2 positions", icon: <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg> },
         { label: "Confiance:", value: "85%", icon: <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg> }
-      ]
+      ],
+      onClick: () => navigate('/strategy/new')
     },
     {
       title: "Simulation terminée",
@@ -75,7 +81,8 @@ export function ActivityGrid() {
       meta: [
         { label: "Précision:", value: "92%", icon: <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg> },
         { label: "Optimisation:", value: "+15%", icon: <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg> }
-      ]
+      ],
+      onClick: () => navigate('/analysis/monaco')
     },
     {
       title: "Profil Pilote",
@@ -85,14 +92,15 @@ export function ActivityGrid() {
       meta: [
         { label: "Niveau:", value: "12", icon: <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg> },
         { label: "XP:", value: "650/1000", icon: <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg> }
-      ]
+      ],
+      onClick: () => navigate('/profile')
     }
   ]
 
   return (
     <div className="f1-race-grid-container p-4">
       {activities.map((activity, index) => (
-        <ActivityCard key={index} {...activity} />
+        <ActivityCard key={index} {...activity} onClick={activity.onClick} />
       ))}
     </div>
   )

@@ -1,14 +1,10 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { AppLayout } from '@/components/layout/AppLayout'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
-import { Skeleton } from '@/components/ui/skeleton'
 import { useRaceStore, selectCurrentRace, selectDrivers, selectLapData, selectRaceLoading, selectRaceError } from '@/stores'
-import { Calendar, MapPin, Users, Settings, Timer, Flag } from 'lucide-react'
+import { Calendar, MapPin, Flag, Users, Gauge } from 'lucide-react'
+import '@/styles/f1-core.css'
+import '@/styles/race-detail.css'
 
 const RaceDetailPage = () => {
   const { raceId } = useParams<{ raceId: string }>()
@@ -20,13 +16,13 @@ const RaceDetailPage = () => {
   const loadRace = useRaceStore((state) => state.loadRace)
   const loadDrivers = useRaceStore((state) => state.loadDrivers)
   const loadLapData = useRaceStore((state) => state.loadLapData)
+  const [activeTab, setActiveTab] = useState('overview')
 
   useEffect(() => {
     if (raceId) {
       const id = parseInt(raceId)
       loadRace(id)
-      // Charger tous les drivers (l'endpoint race/drivers n'existe pas encore)
-      loadDrivers() 
+      loadDrivers()
       loadLapData(id)
     }
   }, [raceId, loadRace, loadDrivers, loadLapData])
@@ -34,11 +30,16 @@ const RaceDetailPage = () => {
   if (error) {
     return (
       <AppLayout>
-        <div className="container mx-auto py-8">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-red-600 mb-4">Erreur de chargement</h2>
-            <p className="text-gray-600 mb-4">{error}</p>
-            <Button onClick={() => raceId && loadRace(parseInt(raceId))}>Réessayer</Button>
+        <div className="f1-page">
+          <div className="f1-container py-12 text-center">
+            <h2 className="text-3xl font-bold text-f1-red mb-4">Erreur de chargement</h2>
+            <p className="text-f1-black mb-6">{error}</p>
+            <button
+              onClick={() => raceId && loadRace(parseInt(raceId))}
+              className="f1-btn f1-btn-primary"
+            >
+              Réessayer
+            </button>
           </div>
         </div>
       </AppLayout>
@@ -48,12 +49,15 @@ const RaceDetailPage = () => {
   if (!currentRace && !isLoading) {
     return (
       <AppLayout>
-        <div className="container mx-auto py-8">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-600 mb-4">Course non trouvée</h2>
-            <Button asChild>
-              <Link to="/library">Retour aux courses</Link>
-            </Button>
+        <div className="f1-page">
+          <div className="f1-container py-12 text-center">
+            <h2 className="text-3xl font-bold text-f1-red mb-4">Course non trouvée</h2>
+            <Link
+              to="/library"
+              className="f1-btn f1-btn-primary inline-block"
+            >
+              Retour aux courses
+            </Link>
           </div>
         </div>
       </AppLayout>
@@ -62,250 +66,237 @@ const RaceDetailPage = () => {
 
   return (
     <AppLayout>
-      <div className="container mx-auto py-8">
-      {/* Breadcrumbs */}
-      <Breadcrumb className="mb-6">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link to="/">Accueil</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link to="/library">Courses</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>{currentRace?.name || 'Chargement...'}</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-
-      {/* Header */}
-      <div className="flex justify-between items-start mb-8">
-        <div>
-          {isLoading ? (
-            <Skeleton className="h-8 w-96 mb-2" />
-          ) : (
-            <h1 className="text-3xl font-bold text-gray-900">{currentRace?.name}</h1>
-          )}
-          {isLoading ? (
-            <Skeleton className="h-4 w-64" />
-          ) : (
-            <div className="flex items-center gap-4 mt-2 text-gray-600">
-              <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4" />
-                {currentRace && new Date(currentRace.date).toLocaleDateString('fr-FR')}
+      <div className="race-detail-container f1-page">
+        {/* Header Section */}
+        <div className="f1-stats">
+          <div className="f1-container">
+            <div className="flex justify-between items-start mb-6">
+              <div>
+                {isLoading ? (
+                  <div className="h-10 w-96 bg-gray-200 rounded animate-pulse mb-4"></div>
+                ) : (
+                  <h1 className="text-4xl font-bold text-f1-red mb-4">{currentRace?.name}</h1>
+                )}
+                {isLoading ? (
+                  <div className="h-6 w-64 bg-gray-200 rounded animate-pulse"></div>
+                ) : (
+                  <div className="flex items-center gap-6 text-f1-black">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4" />
+                      {currentRace && new Date(currentRace.date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <MapPin className="w-4 h-4" />
+                      {currentRace?.country}
+                    </div>
+                    <div className={`px-3 py-1 rounded text-sm font-semibold ${currentRace?.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                      {currentRace?.status === 'completed' ? 'Terminée' : 'À venir'}
+                    </div>
+                  </div>
+                )}
               </div>
-              <div className="flex items-center gap-2">
-                <MapPin className="h-4 w-4" />
-                {currentRace?.country}
+              <div className="flex gap-3">
+                <Link
+                  to="/library"
+                  className="f1-btn f1-btn-secondary"
+                >
+                  ← Retour
+                </Link>
+                <Link
+                  to={`/strategy/new?raceId=${raceId}`}
+                  className="f1-btn f1-btn-primary"
+                >
+                  Simuler la course
+                </Link>
               </div>
-              <Badge variant={currentRace?.status === 'completed' ? 'default' : 'secondary'}>
-                {currentRace?.status === 'completed' ? 'Terminée' : 'À venir'}
-              </Badge>
             </div>
-          )}
+          </div>
         </div>
-        <div className="flex gap-2">
-          <Button asChild variant="outline">
-            <Link to="/races">Retour</Link>
-          </Button>
-          <Button asChild>
-            <Link to={`/simulations/new?raceId=${raceId}`}>Simuler la course</Link>
-          </Button>
-        </div>
-      </div>
 
-      {/* Race Info Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        {isLoading ? (
-          [...Array(4)].map((_, i) => (
-            <Card key={i}>
-              <CardHeader>
-                <Skeleton className="h-4 w-20" />
-              </CardHeader>
-              <CardContent>
-                <Skeleton className="h-8 w-16" />
-              </CardContent>
-            </Card>
-          ))
-        ) : (
-          <>
-            <Card>
-              <CardHeader className="pb-2">
-                <CardDescription className="flex items-center gap-2">
-                  <Flag className="h-4 w-4" />
-                  Saison
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold">{currentRace?.season}</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2">
-                <CardDescription className="flex items-center gap-2">
-                  <Users className="h-4 w-4" />
-                  Round
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold">{currentRace?.round}</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2">
-                <CardDescription className="flex items-center gap-2">
-                  <Timer className="h-4 w-4" />
-                  Pilotes
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold">{drivers.length}</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2">
-                <CardDescription className="flex items-center gap-2">
-                  <Settings className="h-4 w-4" />
-                  Circuit
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-lg font-bold">{currentRace?.circuit?.name}</p>
-                <p className="text-sm text-gray-600">{currentRace?.circuit?.country}</p>
-              </CardContent>
-            </Card>
-          </>
-        )}
-      </div>
-
-      {/* Tabs */}
-      <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList>
-          <TabsTrigger value="overview">Aperçu</TabsTrigger>
-          <TabsTrigger value="drivers">Pilotes</TabsTrigger>
-          <TabsTrigger value="laps">Tours</TabsTrigger>
-          <TabsTrigger value="pits">Arrêts</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="overview" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Aperçu de la course</CardTitle>
-              <CardDescription>Informations générales sur la course</CardDescription>
-            </CardHeader>
-            <CardContent>
+        {/* Race Info Cards */}
+        <div className="f1-stats">
+          <div className="f1-container">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {isLoading ? (
-                <Skeleton className="h-32 w-full" />
+                [...Array(4)].map((_, i) => (
+                  <div key={i} className="h-24 bg-gray-200 rounded animate-pulse"></div>
+                ))
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <h4 className="font-semibold mb-2">Détails de la course</h4>
-                    <div className="space-y-2 text-sm">
-                      <p><strong>Date:</strong> {currentRace && new Date(currentRace.date).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                      <p><strong>Statut:</strong> {currentRace?.status === 'completed' ? 'Terminée' : 'À venir'}</p>
-                      <p><strong>Données importées:</strong> {currentRace?.data_imported ? 'Oui' : 'Non'}</p>
+                <>
+                  <div className="f1-stat-card f1-transform">
+                    <div className="flex items-center gap-3 mb-3">
+                      <Flag className="w-5 h-5 text-f1-red" />
+                      <span className="text-f1-black text-sm font-semibold">Saison</span>
                     </div>
+                    <p className="text-2xl font-bold text-f1-red">{currentRace?.season}</p>
                   </div>
-                  <div>
-                    <h4 className="font-semibold mb-2">Circuit</h4>
-                    <div className="space-y-2 text-sm">
-                      <p><strong>Nom:</strong> {currentRace?.circuit?.name}</p>
-                      <p><strong>Pays:</strong> {currentRace?.circuit?.country}</p>
-                      <p><strong>Longueur:</strong> {currentRace?.circuit?.length_km} km</p>
-                      <p><strong>Virages:</strong> {currentRace?.circuit?.turns}</p>
+                  <div className="f1-stat-card f1-transform">
+                    <div className="flex items-center gap-3 mb-3">
+                      <Gauge className="w-5 h-5 text-f1-red" />
+                      <span className="text-f1-black text-sm font-semibold">Round</span>
                     </div>
+                    <p className="text-2xl font-bold text-f1-red">{currentRace?.round}</p>
                   </div>
-                </div>
+                  <div className="f1-stat-card f1-transform">
+                    <div className="flex items-center gap-3 mb-3">
+                      <Users className="w-5 h-5 text-f1-red" />
+                      <span className="text-f1-black text-sm font-semibold">Pilotes</span>
+                    </div>
+                    <p className="text-2xl font-bold text-f1-red">{drivers.length}</p>
+                  </div>
+                  <div className="f1-stat-card f1-transform">
+                    <div className="flex items-center gap-3 mb-3">
+                      <MapPin className="w-5 h-5 text-f1-red" />
+                      <span className="text-f1-black text-sm font-semibold">Circuit</span>
+                    </div>
+                    <p className="text-lg font-bold text-f1-black">{currentRace?.circuit?.name}</p>
+                    <p className="text-xs text-f1-black mt-1">{currentRace?.circuit?.country}</p>
+                  </div>
+                </>
               )}
-            </CardContent>
-          </Card>
-        </TabsContent>
+            </div>
+          </div>
+        </div>
 
-        <TabsContent value="drivers" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Pilotes participants</CardTitle>
-              <CardDescription>Liste des pilotes de cette course</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {isLoading ? (
-                <div className="space-y-4">
-                  {[...Array(3)].map((_, i) => (
-                    <div key={i} className="flex items-center justify-between p-4 border rounded">
-                      <div className="flex items-center gap-4">
-                        <Skeleton className="h-10 w-10 rounded-full" />
+        {/* Tabs Section */}
+        <div className="f1-filters">
+          <div className="f1-container">
+            <div className="mb-6">
+              <div className="flex gap-2 border-b border-gray-200 mb-6">
+                {['overview', 'drivers', 'laps', 'pits'].map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`px-6 py-3 font-semibold transition uppercase tracking-wider text-sm ${
+                      activeTab === tab
+                        ? 'text-f1-red border-b-2 border-f1-red'
+                        : 'text-f1-black hover:text-f1-black'
+                    }`}
+                  >
+                    {tab === 'overview' && 'Aperçu'}
+                    {tab === 'drivers' && 'Pilotes'}
+                    {tab === 'laps' && 'Tours'}
+                    {tab === 'pits' && 'Arrêts'}
+                  </button>
+                ))}
+              </div>
+
+              {/* Tab Content */}
+              <div className="bg-white rounded-lg p-8 border border-gray-200">
+                {/* Overview Tab */}
+                {activeTab === 'overview' && (
+                  <div>
+                    <h2 className="text-2xl font-bold text-f1-black mb-6">Aperçu de la course</h2>
+                    {isLoading ? (
+                      <div className="h-32 bg-gray-200 rounded animate-pulse"></div>
+                    ) : (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div>
-                          <Skeleton className="h-4 w-24 mb-1" />
-                          <Skeleton className="h-3 w-16" />
-                        </div>
-                      </div>
-                      <Skeleton className="h-8 w-20" />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {drivers.map((driver) => (
-                    <div key={driver.id} className="flex items-center justify-between p-4 border rounded hover:bg-gray-50">
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
-                          <span className="font-mono text-sm font-bold">{driver.code}</span>
+                          <h3 className="text-lg font-semibold text-f1-red mb-4">Détails de la course</h3>
+                          <div className="space-y-3">
+                            <div>
+                              <span className="text-f1-black text-sm">Date</span>
+                              <p className="text-f1-black font-semibold">{currentRace && new Date(currentRace.date).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                            </div>
+                            <div>
+                              <span className="text-f1-black text-sm">Statut</span>
+                              <p className="text-f1-black font-semibold">{currentRace?.status === 'completed' ? 'Terminée' : 'À venir'}</p>
+                            </div>
+                            <div>
+                              <span className="text-f1-black text-sm">Données importées</span>
+                              <p className="text-f1-black font-semibold">{currentRace?.data_imported ? 'Oui ✓' : 'Non'}</p>
+                            </div>
+                          </div>
                         </div>
                         <div>
-                          <p className="font-semibold">{driver.first_name} {driver.last_name}</p>
-                          <p className="text-sm text-gray-600">{driver.team}</p>
+                          <h3 className="text-lg font-semibold text-f1-red mb-4">Circuit</h3>
+                          <div className="space-y-3">
+                            <div>
+                              <span className="text-f1-black text-sm">Nom</span>
+                              <p className="text-f1-black font-semibold">{currentRace?.circuit?.name}</p>
+                            </div>
+                            <div>
+                              <span className="text-f1-black text-sm">Pays</span>
+                              <p className="text-f1-black font-semibold">{currentRace?.circuit?.country}</p>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                <span className="text-f1-black text-sm">Longueur</span>
+                                <p className="text-f1-black font-semibold">{currentRace?.circuit?.length_km} km</p>
+                              </div>
+                              <div>
+                                <span className="text-f1-black text-sm">Virages</span>
+                                <p className="text-f1-black font-semibold">{currentRace?.circuit?.turns}</p>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Badge variant="outline">#{driver.driver_number}</Badge>
-                        <Button asChild size="sm" variant="outline">
-                          <Link to={`/drivers/${driver.id}`}>Voir</Link>
-                        </Button>
+                    )}
+                  </div>
+                )}
+
+                {/* Drivers Tab */}
+                {activeTab === 'drivers' && (
+                  <div>
+                    <h2 className="text-2xl font-bold text-f1-black mb-6">Pilotes participants</h2>
+                    {isLoading ? (
+                      <div className="space-y-3">
+                        {[...Array(3)].map((_, i) => (
+                          <div key={i} className="h-24 bg-gray-200 rounded animate-pulse"></div>
+                        ))}
                       </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
+                    ) : (
+                      <div className="space-y-3">
+                        {drivers.map((driver) => (
+                          <div key={driver.id} className="f1-race-card-compact">
+                            {/* Driver Code Badge (Left) */}
+                            <div className="f1-race-card-compact-image" style={{ background: '#6b7280' }}>
+                              <span className="font-mono text-lg font-bold text-white">{driver.code}</span>
+                            </div>
 
-        <TabsContent value="laps" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Données de tours</CardTitle>
-              <CardDescription>Temps et positions par tour</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {isLoading ? (
-                <Skeleton className="h-32 w-full" />
-              ) : lapData.length > 0 ? (
-                <p className="text-gray-600">Données de tours disponibles pour {lapData.length} tours</p>
-              ) : (
-                <p className="text-gray-600">Aucune donnée de tours disponible pour cette course</p>
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
+                            {/* Driver Info (Center/Content) */}
+                            <div className="f1-race-card-compact-content">
+                              <div className="f1-race-card-compact-header">
+                                <div>
+                                  <h3 className="f1-race-card-compact-title">{driver.first_name} {driver.last_name}</h3>
+                                  <p className="f1-race-card-compact-circuit">{driver.team}</p>
+                                </div>
+                                <span className="inline-block px-3 py-1 ml-4 bg-red-100 text-f1-red text-xs font-bold rounded">#{driver.driver_number}</span>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
 
-        <TabsContent value="pits" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Arrêts au stand</CardTitle>
-              <CardDescription>Stratégies d'arrêts des pilotes</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">Données d'arrêts au stand bientôt disponibles</p>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+                {/* Laps Tab */}
+                {activeTab === 'laps' && (
+                  <div>
+                    <h2 className="text-2xl font-bold text-f1-black mb-6">Données de tours</h2>
+                    {isLoading ? (
+                      <div className="h-32 bg-gray-200 rounded animate-pulse"></div>
+                    ) : lapData.length > 0 ? (
+                      <p className="text-f1-black">Données de tours disponibles pour {lapData.length} tours</p>
+                    ) : (
+                      <p className="text-f1-black">Aucune donnée de tours disponible pour cette course</p>
+                    )}
+                  </div>
+                )}
+
+                {/* Pits Tab */}
+                {activeTab === 'pits' && (
+                  <div>
+                    <h2 className="text-2xl font-bold text-f1-black mb-6">Arrêts au stand</h2>
+                    <p className="text-f1-black">Données d'arrêts au stand bientôt disponibles</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </AppLayout>
   )

@@ -51,7 +51,8 @@ export default {
         'f1-dark-hover': '#2a2a38',
         'f1-dark-border': '#3a3a48',
         'f1-cyan': '#00d4ff',
-        'f1-gray': '#f5f5f5',
+        'f1-black': '#000000',
+        'f1-gray': '#6b7280',
       },
       // Typography
       fontFamily: {

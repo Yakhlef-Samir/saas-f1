@@ -7,7 +7,7 @@
   --f1-red: #FF0000;
   --f1-red-dark: #CC0000;
   --f1-red-light: #FF3333;
-  --f1-black: #15151E;
+  --f1-black: #000000;
   --f1-gray: #4B5563;
   --f1-gray-light: #F3F4F6;
   --f1-white: #FFFFFF;
@@ -612,7 +612,7 @@ body {
 
 @media (min-width: 1024px) {
   .f1-race-grid-container {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
@@ -1567,7 +1567,6 @@ body {
 /* Page Layouts */
 .f1-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
   position: relative;
   overflow: hidden;
 }
