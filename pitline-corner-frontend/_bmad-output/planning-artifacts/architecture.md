@@ -10,11 +10,11 @@ status: 'complete'
 completedAt: '2026-01-15'
 ---
 
-# Architecture Decision Document - Virtual Pit Wall
+# Architecture Decision Document - Virtual pitlane corner
 
 **Author:** Samir
 **Date:** 2026-01-12
-**Project:** saas-f1 (Virtual Pit Wall)
+**Project:** saas-f1 (Virtual pitlane corner)
 
 _Ce document se construit collaborativement à travers une découverte étape par étape. Les sections sont ajoutées au fur et à mesure que nous travaillons ensemble sur chaque décision architecturale._
 
@@ -26,7 +26,7 @@ _Ce document se construit collaborativement à travers une découverte étape pa
 
 **Exigences Fonctionnelles (MVP Phase 1 : 0-6 mois) :**
 
-Le Virtual Pit Wall est une plateforme SaaS B2C d'analyse stratégique post-course Formula 1. Les fonctionnalités essentielles incluent :
+Le Virtual pitlane corner est une plateforme SaaS B2C d'analyse stratégique post-course Formula 1. Les fonctionnalités essentielles incluent :
 
 1. **Strategy Time Machine** (Killer Feature - Différenciation Critique)
    - Simulateur de scénarios "Et si..." pour pilotes sélectionnés
@@ -141,7 +141,7 @@ Le Virtual Pit Wall est une plateforme SaaS B2C d'analyse stratégique post-cour
    - Conséquence : Service backend dédié ingestion/transformation données, validation qualité, fallback manual
 
 3. **Pas de Temps Réel pour MVP**
-   - WebSockets/SSE réservés Phase Vision (18+ mois) pour Virtual Pit Wall LIVE
+   - WebSockets/SSE réservés Phase Vision (18+ mois) pour Virtual pitlane corner LIVE
    - MVP utilise données historiques chargées à la demande
    - Conséquence : Architecture simplifiée, polling léger ou push notifications standard suffisants
 
@@ -503,7 +503,7 @@ FROM python:3.11-slim AS base
 # ... build optimisé pour production
 ```
 
-**Librairies Additionnelles à Installer (MVP Virtual Pit Wall) :**
+**Librairies Additionnelles à Installer (MVP Virtual pitlane corner) :**
 ```bash
 # FastF1 pour données F1
 pip install fastf1

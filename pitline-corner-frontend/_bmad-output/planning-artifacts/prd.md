@@ -23,7 +23,7 @@ classification:
 
 ### User Success
 
-Le succès utilisateur du Virtual Pit Wall se mesure par des moments clés de révélation et de transformation de la compréhension :
+Le succès utilisateur du pitlane corner se mesure par des moments clés de révélation et de transformation de la compréhension :
 
 **Le Moment "Aha!" :**
 - **Principal :** Lorsque l'utilisateur teste son premier scénario "Et si..." et voit la visualisation concrète de l'impact stratégique (ex: simulation d'arrêt un tour plus tôt montrant la position de sortie et le trafic)
@@ -139,7 +139,7 @@ Le **Revenu Mensuel Récurrent (MRR) des abonnements payants** - métrique holis
    - Patterns de stratégies par équipe/circuit/météo
    - Performance et dégradation des pneus par gomme/pilote
 
-3. **Virtual Pit Wall Academy** (Contenu Éducatif Premium)
+3. **Virtual pitlane corner Academy** (Contenu Éducatif Premium)
    - Tutoriels interactifs sur concepts stratégiques ("Maîtriser l'Undercut")
    - Masterclasses vidéo avec experts sur ingénierie de course
 
@@ -156,7 +156,7 @@ Le **Revenu Mensuel Récurrent (MRR) des abonnements payants** - métrique holis
 
 **Fonctionnalités Vision :**
 
-1. **Virtual Pit Wall LIVE** (Tier Premium)
+1. **Virtual pitlane corner LIVE** (Tier Premium)
    - Données temps réel via licence FOM/fournisseur agréé
    - Simulateur stratégie en temps réel pendant la course
    - Alertes stratégiques live (opportunités undercut/overcut, fenêtres optimales)
@@ -193,7 +193,7 @@ Le **Revenu Mensuel Récurrent (MRR) des abonnements payants** - métrique holis
 *Scénario :* Alex vient de regarder le Grand Prix et veut comprendre pourquoi la stratégie de l'équipe X a échoué.
 
 1. **Déclencheur** (Curiosité, frustration) - Fin du GP, questions stratégiques non résolues
-2. **Accès** (Anticipation) - Ouvre Virtual Pit Wall via application web
+2. **Accès** (Anticipation) - Ouvre Virtual pitlane corner via application web
 3. **Sélection** (Facilité) - Trouve le GP dans Race Library
 4. **Exploration** (Immersion) - Lance Race Rewind interactif, revoit les moments clés
 5. **Analyse** (Engagement) - Identifie arrêt aux stands critique, lance simulateur "Et si..."
@@ -217,7 +217,7 @@ Le **Revenu Mensuel Récurrent (MRR) des abonnements payants** - métrique holis
 
 **Journey : Découverte et Conversion**
 
-*Scénario :* Marc découvre Virtual Pit Wall et évalue s'il vaut un abonnement payant.
+*Scénario :* Marc découvre Virtual pitlane corner et évalue s'il vaut un abonnement payant.
 
 1. **Découverte** (Curiosité) - Voit mention sur réseaux sociaux
 2. **Inscription** (Intérêt, espoir) - S'inscrit freemium via landing page
@@ -246,7 +246,7 @@ Le **Revenu Mensuel Récurrent (MRR) des abonnements payants** - métrique holis
 *Scénario :* Chloé veut comprendre une course complexe qu'elle a trouvée intéressante.
 
 1. **Question** (Confusion, curiosité) - "Pourquoi ce pilote a perdu autant de places ?"
-2. **Recherche** (Espoir) - Ouvre Virtual Pit Wall, sélectionne la course
+2. **Recherche** (Espoir) - Ouvre Virtual pitlane corner, sélectionne la course
 3. **Replay** (Compréhension visuelle) - Race Rewind pour revoir moment clé
 4. **Compréhension** (Moment "Aha!", apprentissage) - Voit impact d'un arrêt mal timé
 5. **Satisfaction** (Clarté) - Se sent éclairée sur la course
@@ -293,7 +293,7 @@ Le **Revenu Mensuel Récurrent (MRR) des abonnements payants** - métrique holis
 
 **Profil :**
 - 35 ans, Développeur Web / Data Scientist
-- **Objectif :** Intégrer données Virtual Pit Wall dans ses projets (bots Discord, apps mobiles)
+- **Objectif :** Intégrer données Virtual pitlane corner dans ses projets (bots Discord, apps mobiles)
 - **Besoins :** API fiables, documentation complète, sandbox de test
 
 **Capacités requises (Phase Vision) :**
@@ -336,7 +336,7 @@ Les parcours utilisateurs révèlent les capacités essentielles suivantes :
 **Growth (6-18 mois) :**
 - Comparaisons multi-pilotes
 - Analyse statistique avancée
-- Virtual Pit Wall Academy
+- Virtual pitlane corner Academy
 - Fonctionnalités communautaires (partage scénarios, discussions)
 - Comparaisons multi-saisons
 
@@ -386,7 +386,7 @@ Les parcours utilisateurs révèlent les capacités essentielles suivantes :
 
 2. **Preuve sociale**
    - Partages sociaux (Reddit, Twitter, Discord) de scénarios/conclusions
-   - Discussions générées basées sur analyses Virtual Pit Wall
+   - Discussions générées basées sur analyses Virtual pitlane corner
 
 3. **Impact apprentissage**
    - Enquêtes qualitatives : outil améliore-t-il réellement compréhension ?
@@ -417,19 +417,19 @@ Les parcours utilisateurs révèlent les capacités essentielles suivantes :
 
 **Transition temps réel :**
 - Traction démontrée (5-10K payants, 25-50K€ MRR) = levier négociation FOM
-- Roadmap claire 18+ mois pour Virtual Pit Wall LIVE
+- Roadmap claire 18+ mois pour Virtual pitlane corner LIVE
 
 ## Web Application Specific Requirements
 
 ### Project-Type Overview
 
-Virtual Pit Wall est une application web SaaS B2C hautement interactive nécessitant une architecture optimisée pour les visualisations de données complexes, les simulations en temps réel côté client, et une expérience utilisateur fluide.
+Virtual pitlane corner est une application web SaaS B2C hautement interactive nécessitant une architecture optimisée pour les visualisations de données complexes, les simulations en temps réel côté client, et une expérience utilisateur fluide.
 
 ### Technical Architecture Considerations
 
 **Application Architecture : Single-Page Application (SPA)**
 
-Le Virtual Pit Wall sera construit comme une **Single-Page Application (SPA)** pour offrir l'expérience interactive et fluide nécessaire aux fonctionnalités clés :
+Le Virtual pitlane corner sera construit comme une **Single-Page Application (SPA)** pour offrir l'expérience interactive et fluide nécessaire aux fonctionnalités clés :
 
 - **Justification :** Race Rewind interactif, Strategy Time Machine et tableaux de bord dynamiques exigent des transitions instantanées sans rechargement de page
 - **Frameworks recommandés :** React, Vue.js ou Svelte
@@ -492,7 +492,7 @@ Le Virtual Pit Wall sera construit comme une **Single-Page Application (SPA)** p
 - Notifications système via polling léger ou push notifications standard
 - Pas de WebSockets/SSE nécessaires
 
-**Phase Vision (Virtual Pit Wall LIVE) : Temps Réel Critique**
+**Phase Vision (Virtual pitlane corner LIVE) : Temps Réel Critique**
 - WebSockets ou Server-Sent Events (SSE) pour :
   - Diffusion live données télémétrie
   - Positions en temps réel
@@ -552,7 +552,7 @@ Le Virtual Pit Wall sera construit comme une **Single-Page Application (SPA)** p
 
 **Approche MVP : Hybride Experience + Problem-Solving**
 
-Le Virtual Pit Wall adopte une approche MVP hybride qui :
+Le Virtual pitlane corner adopte une approche MVP hybride qui :
 - **Résout le problème core immédiatement** : Permet de comprendre et tester les stratégies F1 post-course
 - **Offre une expérience complète** : Visualisations, simulations et analyses fonctionnelles de bout en bout
 - **Limite le périmètre intelligemment** : Focus sur saison 2024 et courses emblématiques, sans comparaisons multi-pilotes avancées
@@ -640,7 +640,7 @@ Focus 100% ressources dev sur expérience utilisateur final pour MVP. Back-offic
    - Performance et dégradation des pneus par gomme/pilote
    - Prédictions basées sur historique
 
-3. **Virtual Pit Wall Academy** (Contenu Éducatif Premium)
+3. **Virtual pitlane corner Academy** (Contenu Éducatif Premium)
    - Tutoriels interactifs sur concepts stratégiques
    - Masterclasses vidéo avec experts
    - Certifications/badges pour gamification
@@ -666,7 +666,7 @@ Focus 100% ressources dev sur expérience utilisateur final pour MVP. Back-offic
 
 **Fonctionnalités Vision :**
 
-1. **Virtual Pit Wall LIVE** (Tier Premium)
+1. **Virtual pitlane corner LIVE** (Tier Premium)
    - **Prérequis :** Licence FOM/fournisseur agréé obtenue
    - Données temps réel (live timing, télémétrie, positions)
    - Simulateur stratégie en temps réel pendant la course

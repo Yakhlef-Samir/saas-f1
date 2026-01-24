@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build:*)",
+      "Bash(curl:*)",
+      "Bash(python scripts/prototype_csv_parser.py:*)",
+      "Bash(python:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nstyle: format code with black\n\n- Reformat 32 files to comply with black code style standards\n\nCo-Authored-By: Claude Haiku 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)",
+      "Bash(find:*)",
+      "Bash(for class in f1-container f1-transform f1-btn f1-btn-primary f1-stats f1-race-card f1-nav f1-page f1-footer f1-strategy-page f1-profile-page)",
+      "Bash(do echo \"=== $class ===\")",
+      "Bash(xargs:*)",
+      "Bash(done)"
+    ]
+  }
+}

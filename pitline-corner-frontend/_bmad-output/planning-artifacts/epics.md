@@ -12,7 +12,7 @@ status: 'complete'
 
 ## Overview
 
-This document provides the complete epic and story breakdown for Pitline Corner (Virtual Pit Wall), decomposing the requirements from the PRD and Architecture into implementable stories.
+This document provides the complete epic and story breakdown for Pitline Corner (Virtual pitlane corner), decomposing the requirements from the PRD and Architecture into implementable stories.
 
 ## Requirements Inventory
 

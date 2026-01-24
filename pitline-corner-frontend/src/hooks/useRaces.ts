@@ -107,10 +107,10 @@ export function useRaceFilters() {
 
   const searchRaces = useCallback((query: string) => {
     const lowerQuery = query.toLowerCase()
-    return races.filter(race => 
+    return races.filter(race =>
       race.name.toLowerCase().includes(lowerQuery) ||
-      race.circuit_name.toLowerCase().includes(lowerQuery) ||
-      race.country.toLowerCase().includes(lowerQuery)
+      (race.circuit_name && race.circuit_name.toLowerCase().includes(lowerQuery)) ||
+      (race.country && race.country.toLowerCase().includes(lowerQuery))
     )
   }, [races])
 

@@ -22,7 +22,7 @@ export default {
         text: '#424242',
         'text-secondary': '#757575',
         accent: '#e0e0e0',
-        
+
         // Brand Colors (F1 Inspired)
         primary: '#ff1801', // F1 Red
         secondary: '#15151e', // Dark Blue/Black
@@ -43,6 +43,16 @@ export default {
         'position-gain': '#66bb6a',
         'position-loss': '#f44336',
         'position-same': '#9e9e9e',
+
+        // F1 Theme Colors for Navigation
+        'f1-red': '#e10600',
+        'f1-red-dark': '#b80500',
+        'f1-dark': '#15151e',
+        'f1-dark-hover': '#2a2a38',
+        'f1-dark-border': '#3a3a48',
+        'f1-cyan': '#00d4ff',
+        'f1-black': '#000000',
+        'f1-gray': '#6b7280',
       },
       // Typography
       fontFamily: {

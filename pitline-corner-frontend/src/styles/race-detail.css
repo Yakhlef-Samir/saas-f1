@@ -1,0 +1,7 @@
+/* Race Detail Page - Minimal styles (Tailwind-based) */
+/* Only custom CSS for special cases, rest is handled by Tailwind */
+
+/* Smooth tab border transition */
+button[class*="border-b"] {
+  transition: all 0.2s ease;
+}

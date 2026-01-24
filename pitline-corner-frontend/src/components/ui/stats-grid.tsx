@@ -16,7 +16,7 @@ interface StatCardProps {
 
 export function StatCard({ title, value, icon, trend, badge }: StatCardProps) {
   return (
-    <Card className="f1-stat-card f1-transform flex-1 h-24">
+    <Card className={`f1-stat-card f1-transform flex-1 h-24 ${trend?.isPositive === false ? 'f1-stat-card-negative' : ''}`}>
       <CardContent className="p-4 h-full flex flex-row justify-between">
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center space-x-3">

@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuthStore, selectIsLoading, selectError } from '../stores/authStore'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { AuthForm } from '@/components/ui/auth-form'
-import '@/styles/f1-modern.css'
+import '@/styles/f1-core.css'
 
 export default function RegisterPage() {
   const navigate = useNavigate()

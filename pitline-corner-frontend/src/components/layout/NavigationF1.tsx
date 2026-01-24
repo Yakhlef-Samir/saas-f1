@@ -1,18 +1,16 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
-import '@/styles/f1-modern.css'
+import '@/styles/f1-core.css'
 
 export function NavigationF1() {
   const location = useLocation()
   const { user, logout } = useAuth()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-  const navigation = [
+  // Navigation simplifiée - sidebar gère les features authentifiées
+  const navigation: Array<{ name: string; href: string; icon: string; requiresAuth?: boolean }> = [
     { name: 'Accueil', href: '/', icon: 'home' },
-    { name: 'Race Library', href: '/library', icon: 'flag' },
-    { name: 'Strategy Time Machine', href: '/strategy', icon: 'clock' },
-    { name: 'Dashboard', href: '/dashboard', icon: 'chart', requiresAuth: true },
   ]
 
   const isActive = (href: string) => {
@@ -56,7 +54,7 @@ export function NavigationF1() {
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
             </svg>
           </div>
-          <span className="f1-nav-logo-text">Pitline Corner</span>
+          <span className="f1-nav-logo-text">Pitlane Corner</span>
         </Link>
 
         {/* Desktop Navigation */}

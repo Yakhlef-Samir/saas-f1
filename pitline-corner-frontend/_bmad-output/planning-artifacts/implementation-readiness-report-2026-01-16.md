@@ -138,7 +138,7 @@ assessment_date: '2026-01-16'
 - Performance et dégradation des pneus par gomme/pilote
 - Prédictions basées sur historique
 
-**FR10: Virtual Pit Wall Academy (Contenu Éducatif Premium)**
+**FR10: Virtual pitlane corner Academy (Contenu Éducatif Premium)**
 - Tutoriels interactifs sur concepts stratégiques ("Maîtriser l'Undercut")
 - Masterclasses vidéo avec experts sur ingénierie de course
 - Certifications/badges pour gamification
@@ -154,7 +154,7 @@ assessment_date: '2026-01-16'
 
 **Vision Features (18+ mois):**
 
-**FR13: Virtual Pit Wall LIVE (Tier Premium)**
+**FR13: Virtual pitlane corner LIVE (Tier Premium)**
 - Données temps réel via licence FOM/fournisseur agréé
 - Simulateur stratégie en temps réel pendant la course
 - Alertes stratégiques live (opportunités undercut/overcut, fenêtres optimales)

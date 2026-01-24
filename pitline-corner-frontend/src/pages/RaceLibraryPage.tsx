@@ -1,12 +1,14 @@
-import { useState, useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useMemo, useLayoutEffect } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
-import { MainLayout } from '@/components/layout/MainLayout'
+import { AppLayout } from '@/components/layout/AppLayout'
 import { useRaces, useRaceFilters } from '@/hooks/useRaces'
 import type { Race } from '@/types'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
-import '@/styles/f1-modern.css'
+import ReactCountryFlag from 'react-country-flag'
+import { COUNTRY_ISO2 } from '@/hooks/useCountryCodes'
+import '@/styles/f1-core.css'
 
 /**
  * Formate une date pour l'affichage
@@ -29,13 +31,23 @@ const formatDate = (date: string | Date | null | undefined): string => {
  */
 export default function RaceLibraryPage() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const { races, isLoading, error } = useRaces()
   const { getRacesBySeason, getCompletedRaces, getUpcomingRaces, searchRaces } = useRaceFilters()
-  
+
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedSeason, setSelectedSeason] = useState<number>(2024)
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('list')
   const [activeTab, setActiveTab] = useState<'all' | 'completed' | 'upcoming'>('all')
+
+  // Set active tab from URL query parameter if provided
+  useLayoutEffect(() => {
+    const tab = searchParams.get('tab') as 'all' | 'completed' | 'upcoming' | null
+    if (tab && ['all', 'completed', 'upcoming'].includes(tab)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setActiveTab(tab)
+    }
+  }, [searchParams])
 
   // Filter races based on search and season
   const filteredRaces = useMemo(() => {
@@ -70,7 +82,7 @@ export default function RaceLibraryPage() {
 
   if (isLoading) {
     return (
-      <MainLayout>
+      <AppLayout>
         <div className="f1-container f1-section">
           <div className="f1-flex f1-items-center f1-justify-center" style={{ minHeight: '24rem' }}>
             <div className="f1-loading">
@@ -78,13 +90,13 @@ export default function RaceLibraryPage() {
             </div>
           </div>
         </div>
-      </MainLayout>
+      </AppLayout>
     )
   }
 
   if (error) {
     return (
-      <MainLayout>
+      <AppLayout>
         <div className="f1-container f1-section">
           <div className="f1-empty-state">
             <h2 className="f1-text-2xl f1-font-bold f1-text-gray-900 f1-mb-6">Erreur de chargement</h2>
@@ -97,12 +109,12 @@ export default function RaceLibraryPage() {
             </button>
           </div>
         </div>
-      </MainLayout>
+      </AppLayout>
     )
   }
 
   return (
-    <MainLayout>
+    <AppLayout>
       <div className="f1-min-h-screen f1-bg-gray-50">
 
         {/* Stats Section */}
@@ -276,14 +288,15 @@ export default function RaceLibraryPage() {
                       ? 'f1-race-grid-container'
                       : 'f1-race-list-container'
                   }>
-                    {filteredRaces.map((race) => (
-                      viewMode === 'grid' ? (
-                        <div key={race.id} 
+                    {filteredRaces.map((race) => {
+                     
+                      return viewMode === 'grid' ? (
+                        <div key={race.id}
                           onClick={() => handleRaceSelect(race)}
                           className="f1-race-card f1-transform"
                         >
                           <div className="f1-race-card-image">
-                            <div className="f1-race-card-image-placeholder">Circuit Image</div>
+                         
                             <div className={`f1-race-card-badge ${race.status === 'completed' ? 'completed' : 'upcoming'}`}>
                               {race.status === 'completed' ? 'TERMINÉE' : 'À VENIR'}
                             </div>
@@ -303,18 +316,32 @@ export default function RaceLibraryPage() {
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
-                                <span>{race.country || 'Lieu'}</span>
+                                <span className="flex items-center gap-2">
+                                  {race.country || 'Lieu'}
+                                  {race.country && COUNTRY_ISO2[race.country] && (
+                                    <ReactCountryFlag
+                                      countryCode={COUNTRY_ISO2[race.country]}
+                                      svg
+                                      style={{
+                                        width: '1.2em',
+                                        height: '1.2em',
+                                        borderRadius: '2px'
+                                      }}
+                                      title={race.country}
+                                    />
+                                  )}
+                                </span>
                               </div>
                             </div>
                           </div>
                         </div>
                       ) : (
-                        <div key={race.id} 
+                        <div key={race.id}
                           onClick={() => handleRaceSelect(race)}
                           className="f1-race-card-compact f1-transform"
                         >
                           <div className="f1-race-card-compact-image">
-                            <div className="f1-race-card-image-placeholder">F1</div>
+                            
                           </div>
                           <div className="f1-race-card-compact-content">
                             <div className="f1-race-card-compact-header">
@@ -336,13 +363,27 @@ export default function RaceLibraryPage() {
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
-                                <span>{race.country || 'Lieu'}</span>
+                                <span className="flex items-center gap-2">
+                                  {race.country || 'Lieu'}
+                                  {race.country && COUNTRY_ISO2[race.country] && (
+                                    <ReactCountryFlag
+                                      countryCode={COUNTRY_ISO2[race.country]}
+                                      svg
+                                      style={{
+                                        width: '1.2em',
+                                        height: '1.2em',
+                                        borderRadius: '2px'
+                                      }}
+                                      title={race.country}
+                                    />
+                                  )}
+                                </span>
                               </div>
                             </div>
                           </div>
                         </div>
                       )
-                    ))}
+                    })}
                   </div>
                 )}
               </div>
@@ -353,14 +394,14 @@ export default function RaceLibraryPage() {
                     ? 'f1-race-grid-container'
                     : 'f1-race-list-container'
                 }>
-                  {getCompletedRaces().map((race) => (
-                    viewMode === 'grid' ? (
-                      <div key={race.id} 
+                  {getCompletedRaces().map((race) => {
+                    return viewMode === 'grid' ? (
+                      <div key={race.id}
                         onClick={() => handleRaceSelect(race)}
                         className="f1-race-card f1-transform"
                       >
                         <div className="f1-race-card-image">
-                          <div className="f1-race-card-image-placeholder">Circuit Image</div>
+                         
                           <div className="f1-race-card-badge completed">TERMINÉE</div>
                         </div>
                         <div className="f1-race-card-content">
@@ -384,12 +425,12 @@ export default function RaceLibraryPage() {
                         </div>
                       </div>
                     ) : (
-                      <div key={race.id} 
+                      <div key={race.id}
                         onClick={() => handleRaceSelect(race)}
                         className="f1-race-card-compact f1-transform"
                       >
                         <div className="f1-race-card-compact-image">
-                          <div className="f1-race-card-image-placeholder">F1</div>
+                          
                         </div>
                         <div className="f1-race-card-compact-content">
                           <div className="f1-race-card-compact-header">
@@ -415,7 +456,8 @@ export default function RaceLibraryPage() {
                         </div>
                       </div>
                     )
-                  ))}
+                  })}
+
                 </div>
               </div>
 
@@ -494,6 +536,6 @@ export default function RaceLibraryPage() {
           </div>
         </div>
       </div>
-    </MainLayout>
+    </AppLayout>
   )
 }
