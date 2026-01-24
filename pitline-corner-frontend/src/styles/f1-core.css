@@ -8,7 +8,7 @@
   --f1-red-dark: #CC0000;
   --f1-red-light: #FF3333;
   --f1-black: #15151E;
-  --f1-gray: #6B7280;
+  --f1-gray: #4B5563;
   --f1-gray-light: #F3F4F6;
   --f1-white: #FFFFFF;
   --f1-green: #22C55E;
@@ -231,6 +231,16 @@ body {
   box-shadow: 0 12px 24px var(--f1-shadow-hover);
 }
 
+.f1-stat-value {
+  color: var(--f1-black);
+  font-weight: 700;
+}
+
+.f1-stat-label {
+  color: var(--f1-black);
+  font-weight: 600;
+}
+
 .f1-stat-content h3 {
   font-size: 1.125rem;
   font-weight: 700;
@@ -285,6 +295,8 @@ body {
 .f1-stat-icon svg {
   width: 1.25rem;
   height: 1.25rem;
+  color: var(--f1-red);
+  stroke: currentColor;
 }
 
 .f1-stat-icon.red svg {

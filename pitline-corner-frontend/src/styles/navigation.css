@@ -68,7 +68,6 @@
 .f1-main-layout .main {
   flex: 1;
   overflow-y: auto;
-  padding: 2rem;
 }
 
 /* Mobile Responsive */
