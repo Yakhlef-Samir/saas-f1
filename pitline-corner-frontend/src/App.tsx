@@ -22,7 +22,6 @@ function App() {
         
         {/* Races Routes */}
         <Route path="/library" element={<RaceLibraryPage />} />
-        <Route path="/races/:raceId" element={<RaceDetailPage />} />
         <Route path="/race/:raceId" element={<RaceDetailPage />} />
         <Route path="/analysis/:raceId" element={<PostRaceAnalysisPage />} />
 

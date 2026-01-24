@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import { AppLayout } from '@/components/layout/AppLayout'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -32,31 +33,36 @@ const RaceDetailPage = () => {
 
   if (error) {
     return (
-      <div className="container mx-auto py-8">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-red-600 mb-4">Erreur de chargement</h2>
-          <p className="text-gray-600 mb-4">{error}</p>
-          <Button onClick={() => raceId && loadRace(parseInt(raceId))}>Réessayer</Button>
+      <AppLayout>
+        <div className="container mx-auto py-8">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-red-600 mb-4">Erreur de chargement</h2>
+            <p className="text-gray-600 mb-4">{error}</p>
+            <Button onClick={() => raceId && loadRace(parseInt(raceId))}>Réessayer</Button>
+          </div>
         </div>
-      </div>
+      </AppLayout>
     )
   }
 
   if (!currentRace && !isLoading) {
     return (
-      <div className="container mx-auto py-8">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-600 mb-4">Course non trouvée</h2>
-          <Button asChild>
-            <Link to="/races">Retour aux courses</Link>
-          </Button>
+      <AppLayout>
+        <div className="container mx-auto py-8">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-gray-600 mb-4">Course non trouvée</h2>
+            <Button asChild>
+              <Link to="/library">Retour aux courses</Link>
+            </Button>
+          </div>
         </div>
-      </div>
+      </AppLayout>
     )
   }
 
   return (
-    <div className="container mx-auto py-8">
+    <AppLayout>
+      <div className="container mx-auto py-8">
       {/* Breadcrumbs */}
       <Breadcrumb className="mb-6">
         <BreadcrumbList>
@@ -68,7 +74,7 @@ const RaceDetailPage = () => {
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link to="/races">Courses</Link>
+              <Link to="/library">Courses</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
@@ -300,7 +306,8 @@ const RaceDetailPage = () => {
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
+      </div>
+    </AppLayout>
   )
 }
 

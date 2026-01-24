@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore, selectUser } from '../stores/authStore'
-import { MainLayout } from '@/components/layout/MainLayout'
+import { AppLayout } from '@/components/layout/AppLayout'
 import '@/styles/f1-modern.css'
 
 export default function ProfilePage() {
@@ -44,7 +44,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <MainLayout>
+    <AppLayout>
       <div className="f1-page">
         <div className="f1-profile-page">
           {/* Profile Header */}
@@ -295,6 +295,6 @@ export default function ProfilePage() {
           </section>
         </div>
       </div>
-    </MainLayout>
+    </AppLayout>
   )
 }

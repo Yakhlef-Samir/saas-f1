@@ -308,7 +308,7 @@ export default function StrategyPage() {
                 <button className="f1-strategy-btn f1-strategy-btn-outline">
                   Exporter les Résultats
                 </button>
-                <Link to="/races" className="f1-strategy-btn f1-strategy-btn-outline">
+                <Link to="/library" className="f1-strategy-btn f1-strategy-btn-outline">
                   Retour aux Courses
                 </Link>
               </div>

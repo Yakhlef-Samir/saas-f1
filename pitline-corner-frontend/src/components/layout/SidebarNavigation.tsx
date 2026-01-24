@@ -11,6 +11,7 @@ import {
   Settings,
   LogOut,
   ChevronDown,
+  TrendingUp,
 } from 'lucide-react'
 import '@/styles/navigation.css'
 

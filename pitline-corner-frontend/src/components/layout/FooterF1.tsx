@@ -8,27 +8,14 @@ export function FooterF1() {
     product: [
       { name: 'Race Library', href: '/library' },
       { name: 'Strategy Time Machine', href: '/strategy' },
+      { name: 'Academy', href: '/academy' },
       { name: 'Dashboard', href: '/dashboard' },
-      { name: 'Pricing', href: '/pricing' },
     ],
     company: [
-      { name: 'About', href: '/about' },
-      { name: 'Blog', href: '/blog' },
-      { name: 'Careers', href: '/careers' },
-      { name: 'Press', href: '/press' },
+      { name: 'GitHub', href: 'https://github.com/Yakhlef-Samir/saas-f1' },
     ],
-    support: [
-      { name: 'Help Center', href: '/help' },
-      { name: 'Contact', href: '/contact' },
-      { name: 'API Docs', href: '/docs' },
-      { name: 'Status', href: '/status' },
-    ],
-    legal: [
-      { name: 'Privacy', href: '/privacy' },
-      { name: 'Terms', href: '/terms' },
-      { name: 'Cookie Policy', href: '/cookies' },
-      { name: 'Licenses', href: '/licenses' },
-    ],
+    support: [],
+    legal: [],
   }
 
   const socialLinks = [
@@ -116,37 +103,43 @@ export function FooterF1() {
             </ul>
           </div>
 
-          <div className="f1-footer-column">
-            <h3 className="f1-footer-title">Entreprise</h3>
-            <ul className="f1-footer-links">
-              {footerLinks.company.map((link) => (
-                <li key={link.name}>
-                  <Link 
-                    to={link.href} 
-                    className="f1-footer-link"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {footerLinks.company.length > 0 && (
+            <div className="f1-footer-column">
+              <h3 className="f1-footer-title">Entreprise</h3>
+              <ul className="f1-footer-links">
+                {footerLinks.company.map((link) => (
+                  <li key={link.name}>
+                    <a
+                      href={link.href}
+                      className="f1-footer-link"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {link.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
-          <div className="f1-footer-column">
-            <h3 className="f1-footer-title">Support</h3>
-            <ul className="f1-footer-links">
-              {footerLinks.support.map((link) => (
-                <li key={link.name}>
-                  <Link 
-                    to={link.href} 
-                    className="f1-footer-link"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {footerLinks.support.length > 0 && (
+            <div className="f1-footer-column">
+              <h3 className="f1-footer-title">Support</h3>
+              <ul className="f1-footer-links">
+                {footerLinks.support.map((link) => (
+                  <li key={link.name}>
+                    <Link
+                      to={link.href}
+                      className="f1-footer-link"
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
 
@@ -158,17 +151,19 @@ export function FooterF1() {
               © {currentYear} Pitline Corner. Tous droits réservés.
             </div>
             
-            <div className="f1-footer-legal">
-              {footerLinks.legal.map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.href}
-                  className="f1-footer-legal-link"
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </div>
+            {footerLinks.legal.length > 0 && (
+              <div className="f1-footer-legal">
+                {footerLinks.legal.map((link) => (
+                  <Link
+                    key={link.name}
+                    to={link.href}
+                    className="f1-footer-legal-link"
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
