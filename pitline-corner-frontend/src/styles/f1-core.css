@@ -236,6 +236,23 @@ body {
   font-weight: 700;
 }
 
+/* Color stats grid values by position */
+.f1-stat-card:nth-child(1) .f1-stat-value {
+  color: var(--f1-red);
+}
+
+.f1-stat-card:nth-child(2) .f1-stat-value {
+  color: var(--f1-green);
+}
+
+.f1-stat-card:nth-child(3) .f1-stat-value {
+  color: var(--f1-amber);
+}
+
+.f1-stat-card:nth-child(4) .f1-stat-value {
+  color: #3B82F6;
+}
+
 .f1-stat-label {
   color: var(--f1-black);
   font-weight: 600;
@@ -1787,6 +1804,55 @@ body {
   color: #d1d5db;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+/* Chart Stats */
+.f1-chart-container {
+  width: 100%;
+}
+
+.f1-chart-footer {
+  margin-top: 2rem;
+}
+
+.f1-chart-stats {
+  display: flex;
+  justify-content: space-around;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.f1-chart-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.f1-chart-stat-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--f1-black);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.f1-chart-stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #3B82F6;
+}
+
+.f1-chart-stat:nth-child(1) .f1-chart-stat-value {
+  color: var(--f1-green);
+}
+
+.f1-chart-stat:nth-child(2) .f1-chart-stat-value {
+  color: #3B82F6;
+}
+
+.f1-chart-stat:nth-child(3) .f1-chart-stat-value {
+  color: var(--f1-amber);
 }
 
 /* Strategy Page Section */
