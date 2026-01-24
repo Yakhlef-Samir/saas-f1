@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore, selectUser } from '../stores/authStore'
 import { AppLayout } from '@/components/layout/AppLayout'
-import '@/styles/f1-modern.css'
+import '@/styles/f1-core.css'
 
 export default function ProfilePage() {
   const navigate = useNavigate()

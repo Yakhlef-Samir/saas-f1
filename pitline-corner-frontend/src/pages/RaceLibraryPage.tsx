@@ -6,7 +6,7 @@ import { useRaces, useRaceFilters } from '@/hooks/useRaces'
 import type { Race } from '@/types'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
-import '@/styles/f1-modern.css'
+import '@/styles/f1-core.css'
 
 /**
  * Formate une date pour l'affichage

@@ -5,7 +5,7 @@ import { AppLayout } from '@/components/layout/AppLayout'
 import { StatsGrid } from '@/components/ui/stats-grid'
 import { ActivityGrid } from '@/components/ui/activity-grid'
 import { ChartContainer } from '@/components/ui/chart'
-import '@/styles/f1-modern.css'
+import '@/styles/f1-core.css'
 
 export default function DashboardPage() {
   const navigate = useNavigate()

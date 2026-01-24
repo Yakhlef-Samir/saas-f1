@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { MainLayout } from '@/components/layout/MainLayout'
-import '@/styles/f1-modern.css'
+import '@/styles/f1-core.css'
 
 export default function HomePage() {
   return (

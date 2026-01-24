@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
-import '@/styles/f1-modern.css'
+import '@/styles/f1-core.css'
 
 export function NavigationF1() {
   const location = useLocation()

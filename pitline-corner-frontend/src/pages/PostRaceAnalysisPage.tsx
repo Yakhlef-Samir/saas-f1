@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { Play, Pause, SkipBack, SkipForward } from 'lucide-react'
-import '@/styles/f1-modern.css'
+import '@/styles/f1-core.css'
 
 interface TimelinePosition {
   lap: number

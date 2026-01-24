@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import '@/styles/f1-modern.css'
+import '@/styles/f1-core.css'
 
 interface FooterLink {
   name: string

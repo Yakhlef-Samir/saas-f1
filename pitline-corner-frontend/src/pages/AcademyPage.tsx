@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { Play, BookOpen, Target, Zap, TrendingUp } from 'lucide-react'
-import '@/styles/f1-modern.css'
+import '@/styles/f1-core.css'
 
 interface Lesson {
   id: string

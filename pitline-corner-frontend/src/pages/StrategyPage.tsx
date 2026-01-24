@@ -10,7 +10,7 @@ import {
   selectRaces,
   selectDrivers
 } from '@/stores'
-import '@/styles/f1-modern.css'
+import '@/styles/f1-core.css'
 
 export default function StrategyPage() {
   const [searchParams] = useSearchParams()
