@@ -818,7 +818,7 @@ body {
 }
 
 .f1-text-gray-600 {
-  color: var(--f1-gray);
+  color: var(--f1-black);
 }
 
 .f1-font-bold {
@@ -1772,7 +1772,7 @@ body {
   font-family: var(--f1-font-family);
   font-weight: 600;
   font-size: 0.875rem;
-  color: var(--f1-white);
+  color: #d1d5db;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
