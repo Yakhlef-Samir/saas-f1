@@ -67,35 +67,36 @@ const RaceDetailPage = () => {
   return (
     <AppLayout>
       <div className="race-detail-container f1-page">
-        {/* Header Section */}
-        <div className="f1-stats">
+        {/* SECTION 1: Hero Header */}
+        <div className="race-detail-hero">
           <div className="f1-container">
-            <div className="flex justify-between items-start mb-6">
-              <div>
+            <div className="race-detail-hero-content">
+              <div className="race-detail-hero-left">
                 {isLoading ? (
-                  <div className="h-10 w-96 bg-gray-200 rounded animate-pulse mb-4"></div>
+                  <>
+                    <div className="h-10 w-96 bg-gray-200 rounded animate-pulse mb-4"></div>
+                    <div className="h-6 w-64 bg-gray-200 rounded animate-pulse"></div>
+                  </>
                 ) : (
-                  <h1 className="text-4xl font-bold text-f1-red mb-4">{currentRace?.name}</h1>
-                )}
-                {isLoading ? (
-                  <div className="h-6 w-64 bg-gray-200 rounded animate-pulse"></div>
-                ) : (
-                  <div className="flex items-center gap-6 text-f1-black">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4" />
-                      {currentRace && new Date(currentRace.date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}
+                  <>
+                    <h1 className="race-detail-hero-title">{currentRace?.name}</h1>
+                    <div className="race-detail-hero-meta">
+                      <div className="race-detail-hero-meta-item">
+                        <Calendar />
+                        {currentRace && new Date(currentRace.date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}
+                      </div>
+                      <div className="race-detail-hero-meta-item">
+                        <MapPin />
+                        {currentRace?.country}
+                      </div>
+                      <div className={`race-detail-status-badge ${currentRace?.status === 'completed' ? 'completed' : currentRace?.status === 'scheduled' ? 'pending' : 'active'}`}>
+                        {currentRace?.status === 'completed' ? 'Terminée' : 'À venir'}
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <MapPin className="w-4 h-4" />
-                      {currentRace?.country}
-                    </div>
-                    <div className={`px-3 py-1 rounded text-sm font-semibold ${currentRace?.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                      {currentRace?.status === 'completed' ? 'Terminée' : 'À venir'}
-                    </div>
-                  </div>
+                  </>
                 )}
               </div>
-              <div className="flex gap-3">
+              <div className="race-detail-hero-actions">
                 <Link
                   to="/library"
                   className="f1-btn f1-btn-secondary"
@@ -113,125 +114,121 @@ const RaceDetailPage = () => {
           </div>
         </div>
 
-        {/* Race Info Cards */}
-        <div className="f1-stats">
-          <div className="f1-container">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              {isLoading ? (
-                [...Array(4)].map((_, i) => (
-                  <div key={i} className="h-24 bg-gray-200 rounded animate-pulse"></div>
-                ))
-              ) : (
-                <>
-                  <div className="f1-stat-card f1-transform">
-                    <div className="flex items-center gap-3 mb-3">
-                      <Flag className="w-5 h-5 text-f1-red" />
-                      <span className="text-f1-black text-sm font-semibold">Saison</span>
-                    </div>
-                    <p className="text-2xl font-bold text-f1-red">{currentRace?.season}</p>
+        {/* SECTION 2: Enhanced Stat Cards */}
+        <div className="f1-container">
+          <div className="race-detail-stats-section">
+            {isLoading ? (
+              [...Array(4)].map((_, i) => (
+                <div key={i} className="h-24 bg-gray-200 rounded animate-pulse"></div>
+              ))
+            ) : (
+              <>
+                <div className="race-detail-stat-card">
+                  <div className="race-detail-stat-card-header">
+                    <Flag className="race-detail-stat-card-icon" />
+                    <span className="race-detail-stat-card-label">Saison</span>
                   </div>
-                  <div className="f1-stat-card f1-transform">
-                    <div className="flex items-center gap-3 mb-3">
-                      <Gauge className="w-5 h-5 text-f1-red" />
-                      <span className="text-f1-black text-sm font-semibold">Round</span>
-                    </div>
-                    <p className="text-2xl font-bold text-f1-red">{currentRace?.round}</p>
+                  <div className="race-detail-stat-card-value">{currentRace?.season}</div>
+                </div>
+                <div className="race-detail-stat-card">
+                  <div className="race-detail-stat-card-header">
+                    <Gauge className="race-detail-stat-card-icon" />
+                    <span className="race-detail-stat-card-label">Round</span>
                   </div>
-                  <div className="f1-stat-card f1-transform">
-                    <div className="flex items-center gap-3 mb-3">
-                      <Users className="w-5 h-5 text-f1-red" />
-                      <span className="text-f1-black text-sm font-semibold">Pilotes</span>
-                    </div>
-                    <p className="text-2xl font-bold text-f1-red">{drivers.length}</p>
+                  <div className="race-detail-stat-card-value">{currentRace?.round}</div>
+                </div>
+                <div className="race-detail-stat-card">
+                  <div className="race-detail-stat-card-header">
+                    <Users className="race-detail-stat-card-icon" />
+                    <span className="race-detail-stat-card-label">Pilotes</span>
                   </div>
-                  <div className="f1-stat-card f1-transform">
-                    <div className="flex items-center gap-3 mb-3">
-                      <MapPin className="w-5 h-5 text-f1-red" />
-                      <span className="text-f1-black text-sm font-semibold">Circuit</span>
-                    </div>
-                    <p className="text-lg font-bold text-f1-black">{currentRace?.circuit?.name}</p>
-                    <p className="text-xs text-f1-black mt-1">{currentRace?.circuit?.country}</p>
+                  <div className="race-detail-stat-card-value">{drivers.length}</div>
+                </div>
+                <div className="race-detail-stat-card">
+                  <div className="race-detail-stat-card-header">
+                    <MapPin className="race-detail-stat-card-icon" />
+                    <span className="race-detail-stat-card-label">Circuit</span>
                   </div>
-                </>
-              )}
-            </div>
+                  <div className="race-detail-stat-card-value">{currentRace?.circuit?.name}</div>
+                  <div className="race-detail-stat-card-subtext">{currentRace?.circuit?.country}</div>
+                </div>
+              </>
+            )}
           </div>
         </div>
 
-        {/* Tabs Section */}
-        <div className="f1-filters">
-          <div className="f1-container">
-            <div className="mb-6">
-              <div className="flex gap-2 border-b border-gray-200 mb-6">
-                {['overview', 'drivers', 'laps', 'pits'].map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
-                    className={`px-6 py-3 font-semibold transition uppercase tracking-wider text-sm ${
-                      activeTab === tab
-                        ? 'text-f1-red border-b-2 border-f1-red'
-                        : 'text-f1-black hover:text-f1-black'
-                    }`}
-                  >
-                    {tab === 'overview' && 'Aperçu'}
-                    {tab === 'drivers' && 'Pilotes'}
-                    {tab === 'laps' && 'Tours'}
-                    {tab === 'pits' && 'Arrêts'}
-                  </button>
-                ))}
-              </div>
+        {/* SECTION 3: Tab Navigation */}
+        <div className="f1-container">
+          <div className="race-detail-tabs">
+            <div className="race-detail-tab-list">
+              {['overview', 'drivers', 'laps', 'pits'].map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`race-detail-tab-button ${activeTab === tab ? 'active' : ''}`}
+                >
+                  {tab === 'overview' && 'Aperçu'}
+                  {tab === 'drivers' && 'Pilotes'}
+                  {tab === 'laps' && 'Tours'}
+                  {tab === 'pits' && 'Arrêts'}
+                </button>
+              ))}
+            </div>
 
-              {/* Tab Content */}
-              <div className="bg-white rounded-lg p-8 border border-gray-200">
-                {/* Overview Tab */}
+            {/* Tab Content */}
+            <div className="race-detail-content">
+                {/* SECTION 4: Overview Tab - Race Overview Content */}
                 {activeTab === 'overview' && (
                   <div>
                     <h2 className="text-2xl font-bold text-f1-black mb-6">Aperçu de la course</h2>
                     {isLoading ? (
                       <div className="h-32 bg-gray-200 rounded animate-pulse"></div>
                     ) : (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div>
-                          <h3 className="text-lg font-semibold text-f1-red mb-4">Détails de la course</h3>
-                          <div className="space-y-3">
-                            <div>
-                              <span className="text-f1-black text-sm">Date</span>
-                              <p className="text-f1-black font-semibold">{currentRace && new Date(currentRace.date).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                            </div>
-                            <div>
-                              <span className="text-f1-black text-sm">Statut</span>
-                              <p className="text-f1-black font-semibold">{currentRace?.status === 'completed' ? 'Terminée' : 'À venir'}</p>
-                            </div>
-                            <div>
-                              <span className="text-f1-black text-sm">Données importées</span>
-                              <p className="text-f1-black font-semibold">{currentRace?.data_imported ? 'Oui ✓' : 'Non'}</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-semibold text-f1-red mb-4">Circuit</h3>
-                          <div className="space-y-3">
-                            <div>
-                              <span className="text-f1-black text-sm">Nom</span>
-                              <p className="text-f1-black font-semibold">{currentRace?.circuit?.name}</p>
-                            </div>
-                            <div>
-                              <span className="text-f1-black text-sm">Pays</span>
-                              <p className="text-f1-black font-semibold">{currentRace?.circuit?.country}</p>
-                            </div>
-                            <div className="grid grid-cols-2 gap-4">
-                              <div>
-                                <span className="text-f1-black text-sm">Longueur</span>
-                                <p className="text-f1-black font-semibold">{currentRace?.circuit?.length_km} km</p>
+                      <>
+                        <div className="race-detail-overview-grid">
+                          {/* Race Details Section */}
+                          <div className="race-detail-overview-section">
+                            <h3 className="race-detail-overview-title">Détails de la course</h3>
+                            <div className="race-detail-overview-fields">
+                              <div className="race-detail-field">
+                                <span className="race-detail-field-label">Date</span>
+                                <div className="race-detail-field-with-icon">
+                                  <Calendar className="race-detail-field-icon" />
+                                  <span className="race-detail-field-value">{currentRace && new Date(currentRace.date).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                                </div>
                               </div>
-                              <div>
-                                <span className="text-f1-black text-sm">Virages</span>
-                                <p className="text-f1-black font-semibold">{currentRace?.circuit?.turns}</p>
+                              <div className="race-detail-field">
+                                <span className="race-detail-field-label">Statut</span>
+                                <span className="race-detail-field-value">{currentRace?.status === 'completed' ? 'Terminée' : 'À venir'}</span>
+                              </div>
+                              <div className="race-detail-field">
+                                <span className="race-detail-field-label">Données importées</span>
+                                <span className="race-detail-field-value">{currentRace?.data_imported ? 'Oui ✓' : 'Non'}</span>
                               </div>
                             </div>
                           </div>
+
+                          {/* SECTION 5: Circuit Card */}
+                          <div className="race-detail-overview-section">
+                            <div className="race-detail-circuit-card">
+                              <div className="race-detail-circuit-header">
+                                <h3 className="race-detail-circuit-title">{currentRace?.circuit?.name}</h3>
+                                <span className="race-detail-circuit-country-badge">{currentRace?.circuit?.country}</span>
+                              </div>
+                              <div className="race-detail-circuit-stats">
+                                <div className="race-detail-circuit-stat">
+                                  <span className="race-detail-circuit-stat-label">Longueur</span>
+                                  <span className="race-detail-circuit-stat-value">{currentRace?.circuit?.length_km} km</span>
+                                </div>
+                                <div className="race-detail-circuit-stat">
+                                  <span className="race-detail-circuit-stat-label">Virages</span>
+                                  <span className="race-detail-circuit-stat-value">{currentRace?.circuit?.turns}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
+                      </>
                     )}
                   </div>
                 )}
@@ -293,7 +290,6 @@ const RaceDetailPage = () => {
                     <p className="text-f1-black">Données d'arrêts au stand bientôt disponibles</p>
                   </div>
                 )}
-              </div>
             </div>
           </div>
         </div>
