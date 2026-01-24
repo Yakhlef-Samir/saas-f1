@@ -9,7 +9,7 @@ export function NavigationF1() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   // Navigation simplifiée - sidebar gère les features authentifiées
-  const navigation = [
+  const navigation: Array<{ name: string; href: string; icon: string; requiresAuth?: boolean }> = [
     { name: 'Accueil', href: '/', icon: 'home' },
   ]
 

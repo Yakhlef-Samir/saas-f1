@@ -1,6 +1,6 @@
 # Pitline Corner - Frontend
 
-Virtual Pit Wall : Plateforme SaaS d'analyse stratégique post-course Formula 1.
+Virtual pitlane corner : Plateforme SaaS d'analyse stratégique post-course Formula 1.
 
 ## Tech Stack
 

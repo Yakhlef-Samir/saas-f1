@@ -13,15 +13,15 @@ export function useSimulation() {
   const isLoading = useSimulationStore(selectSimulationLoading)
   const error = useSimulationStore(selectSimulationError)
   
-  const runSimulation = useSimulationStore((state) => state.runSimulation)
+  const createSimulation = useSimulationStore((state) => state.createSimulation)
   const loadUserSimulations = useSimulationStore((state) => state.loadUserSimulations)
   const setCurrentSimulation = useSimulationStore((state) => state.setCurrentSimulation)
   const clearError = useSimulationStore((state) => state.clearError)
 
   const runNewSimulation = useCallback(async (request: SimulationRequest) => {
-    const result = await runSimulation(request)
+    const result = await createSimulation(request)
     return result
-  }, [runSimulation])
+  }, [createSimulation])
 
   const getPositionDelta = useCallback(() => {
     if (!currentSimulation) return 0

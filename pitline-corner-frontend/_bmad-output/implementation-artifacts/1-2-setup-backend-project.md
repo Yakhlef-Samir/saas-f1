@@ -149,7 +149,7 @@ postgresql+asyncpg://user:password@localhost:5432/pitline_corner
 **FastAPI Setup:**
 - Title: "Pitline Corner"
 - Version: "1.0.0"
-- Description: "Virtual Pit Wall - Backend API"
+- Description: "Virtual pitlane corner - Backend API"
 - OpenAPI documentation at `/docs`
 - Health check at `/health`
 

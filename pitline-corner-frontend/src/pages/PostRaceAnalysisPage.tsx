@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useParams } from 'react-router-dom'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { Play, Pause, SkipBack, SkipForward } from 'lucide-react'
 import '@/styles/f1-core.css'
@@ -20,8 +19,7 @@ interface TelemetryData {
 }
 
 export default function PostRaceAnalysisPage() {
-  const { raceId } = useParams()
-  const [currentLap, setCurrentLap] = useState(42)
+  const [currentLap] = useState(42)
   const [isPlaying, setIsPlaying] = useState(false)
   const [selectedDriver, setSelectedDriver] = useState('VER')
 
