@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { Circuit, ApiResponse } from '@/types'
+import type { Circuit, Race, ApiResponse } from '@/types'
 
 interface CircuitState {
   circuits: Circuit[]
@@ -38,7 +38,7 @@ export const useCircuitStore = create<CircuitState>((set) => ({
     
     try {
       // Note: Backend doesn't have a circuits endpoint yet, but we can get them from races
-      const result = await apiCall<{ races: any[] }>(`${API_BASE_URL}/api/v1/races`)
+      const result = await apiCall<{ races: Race[] }>(`${API_BASE_URL}/api/v1/races`)
       
       // Extract unique circuits from races
       const uniqueCircuits = new Map()
@@ -65,7 +65,7 @@ export const useCircuitStore = create<CircuitState>((set) => ({
     
     try {
       // Find circuit from races since no direct circuit endpoint
-      const result = await apiCall<{ races: any[] }>(`${API_BASE_URL}/api/v1/races`)
+      const result = await apiCall<{ races: Race[] }>(`${API_BASE_URL}/api/v1/races`)
       
       const circuit = result.races
         .find(race => race.circuit?.id === circuitId)?.circuit || null
