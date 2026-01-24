@@ -4,10 +4,8 @@ import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
 import DashboardPage from './pages/DashboardPage'
 import RaceLibraryPage from './pages/RaceLibraryPage'
-import RacesListPage from './pages/RacesListPage'
 import RaceDetailPage from './pages/RaceDetailPage'
 import PostRaceAnalysisPage from './pages/PostRaceAnalysisPage'
-import DriversListPage from './pages/DriversListPage'
 import StrategyPage from './pages/StrategyPage'
 import AcademyPage from './pages/AcademyPage'
 import ProfilePage from './pages/ProfilePage'
@@ -24,13 +22,9 @@ function App() {
         
         {/* Races Routes */}
         <Route path="/library" element={<RaceLibraryPage />} />
-        <Route path="/races" element={<RacesListPage />} />
         <Route path="/races/:raceId" element={<RaceDetailPage />} />
         <Route path="/race/:raceId" element={<RaceDetailPage />} />
         <Route path="/analysis/:raceId" element={<PostRaceAnalysisPage />} />
-
-        {/* Drivers Routes */}
-        <Route path="/drivers" element={<DriversListPage />} />
 
         {/* Strategy & Simulations Routes */}
         <Route path="/strategy" element={<StrategyPage />} />
