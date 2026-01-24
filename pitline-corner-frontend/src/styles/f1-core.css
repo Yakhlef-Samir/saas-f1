@@ -238,13 +238,11 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: var(--f1-black);
 }
 
 .f1-stat-content .number-red {
-  background: linear-gradient(135deg, var(--f1-red), var(--f1-red-dark));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--f1-red);
 }
 
 .f1-stat-content .number-green {
@@ -257,7 +255,7 @@ body {
 
 .f1-stat-content p {
   font-size: 0.875rem;
-  color: var(--f1-gray);
+  color: var(--f1-black);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;

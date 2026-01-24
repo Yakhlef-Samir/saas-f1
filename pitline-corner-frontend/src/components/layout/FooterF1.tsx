@@ -66,7 +66,7 @@ export function FooterF1() {
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
                   </svg>
                 </div>
-                <span className="f1-footer-logo-text">Pitline Corner</span>
+                <span className="f1-footer-logo-text">Pitlane corner - Pitline Corner</span>
               </div>
               <p className="f1-footer-description">
                 La plateforme de référence pour l'analyse stratégique des courses de Formule 1. 
@@ -151,7 +151,7 @@ export function FooterF1() {
         <div className="f1-container">
           <div className="f1-footer-bottom-content">
             <div className="f1-footer-copyright">
-              © {currentYear} Pitline Corner. Tous droits réservés.
+              © {currentYear} Pitlane Corner. Tous droits réservés.
             </div>
             
             {footerLinks.legal.length > 0 && (

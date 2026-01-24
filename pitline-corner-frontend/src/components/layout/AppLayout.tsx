@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
 import { SidebarNavigation } from './SidebarNavigation'
-import { NavigationF1 } from './NavigationF1'
 import { useAuth } from '@/hooks/useAuth'
 import '@/styles/navigation.css'
 
@@ -19,7 +18,6 @@ export function AppLayout({ children, showSidebar = true }: AppLayoutProps) {
 
   return (
     <>
-      <NavigationF1 />
       <div className="f1-main-layout">
         <SidebarNavigation />
         <div className="content">
