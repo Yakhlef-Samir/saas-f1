@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import type { Simulation, ApiResponse } from '@/types'
 
 // Types matching API response format (snake_case as per project-context.md)
 export interface SimulationRequest {
@@ -8,93 +9,76 @@ export interface SimulationRequest {
   alternative_tire_compound: string
 }
 
-export interface SimulationResult {
-  id: number
-  race_id: number
-  driver_id: number
-  alternative_stop_lap: number
-  alternative_tire_compound: string
-  predicted_position: number
-  predicted_gap: number
-  actual_position: number
-  actual_gap: number
-  position_delta: number
-  gap_delta: number
-  simulation_metadata: {
-    calculation_time_ms: number
-    traffic_affected: boolean
-    confidence_score: number
-  }
-  created_at: string
-  user_id: number
-}
-
-export interface Simulation {
-  id: number
-  race_id: number
-  driver_id: number
-  alternative_stop_lap: number
-  alternative_tire_compound: string
-  predicted_position: number
-  predicted_gap: number
-  actual_position: number
-  actual_gap: number
-  position_delta: number
-  gap_delta: number
-  created_at: string
-}
-
 interface SimulationState {
-  currentSimulation: SimulationResult | null
+  currentSimulation: Simulation | null
   userSimulations: Simulation[]
+  raceSimulations: Simulation[]
   isSimulating: boolean
   isLoading: boolean
   error: string | null
   
   // Actions
-  runSimulation: (request: SimulationRequest) => Promise<SimulationResult | null>
+  createSimulation: (request: SimulationRequest) => Promise<Simulation | null>
   loadUserSimulations: () => Promise<void>
-  setCurrentSimulation: (simulation: SimulationResult | null) => void
+  loadRaceSimulations: (raceId: number, driverId?: number) => Promise<void>
+  loadSimulation: (simulationId: number) => Promise<void>
+  setCurrentSimulation: (simulation: Simulation | null) => void
   clearError: () => void
 }
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
+// Helper function for API calls
+const apiCall = async <T>(url: string, options?: RequestInit): Promise<T> => {
+  const response = await fetch(url, options)
+  
+  if (!response.ok) {
+    throw new Error(`API Error: ${response.status} ${response.statusText}`)
+  }
+  
+  const result: ApiResponse<T> = await response.json()
+  return result.data
+}
+
+// Helper function for authenticated API calls
+const authenticatedApiCall = async <T>(url: string, options?: RequestInit): Promise<T> => {
+  const token = localStorage.getItem('auth-storage')
+  if (!token) {
+    throw new Error('Authentication required')
+  }
+
+  const authData = JSON.parse(token)
+  const accessToken = authData.state?.token
+
+  return apiCall<T>(url, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${accessToken}`,
+      ...options?.headers,
+    },
+  })
+}
+
 export const useSimulationStore = create<SimulationState>((set) => ({
   currentSimulation: null,
   userSimulations: [],
+  raceSimulations: [],
   isSimulating: false,
   isLoading: false,
   error: null,
 
-  runSimulation: async (request: SimulationRequest): Promise<SimulationResult | null> => {
+  createSimulation: async (request: SimulationRequest): Promise<Simulation | null> => {
     set({ isSimulating: true, error: null })
     
     try {
-      const token = localStorage.getItem('auth-storage')
-      if (!token) {
-        throw new Error('Authentication required')
-      }
-
-      const authData = JSON.parse(token)
-      const accessToken = authData.state?.token
-
-      const response = await fetch(`${API_BASE_URL}/api/v1/simulations/run`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify(request),
-      })
-      
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error?.message || 'Simulation failed')
-      }
-      
-      const result = await response.json()
-      const simulation = result.data
+      const simulation = await authenticatedApiCall<Simulation>(
+        `${API_BASE_URL}/api/v1/simulations`,
+        {
+          method: 'POST',
+          body: JSON.stringify(request),
+        }
+      )
       
       set({ 
         currentSimulation: simulation,
@@ -116,27 +100,12 @@ export const useSimulationStore = create<SimulationState>((set) => ({
     set({ isLoading: true, error: null })
     
     try {
-      const token = localStorage.getItem('auth-storage')
-      if (!token) {
-        throw new Error('Authentication required')
-      }
-
-      const authData = JSON.parse(token)
-      const accessToken = authData.state?.token
-
-      const response = await fetch(`${API_BASE_URL}/api/v1/simulations/user`, {
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-        },
-      })
+      const result = await authenticatedApiCall<{ simulations: Simulation[] }>(
+        `${API_BASE_URL}/api/v1/simulations`
+      )
       
-      if (!response.ok) {
-        throw new Error('Failed to load simulations')
-      }
-      
-      const result = await response.json()
       set({ 
-        userSimulations: result.data,
+        userSimulations: result.simulations,
         isLoading: false 
       })
     } catch (error) {
@@ -147,7 +116,51 @@ export const useSimulationStore = create<SimulationState>((set) => ({
     }
   },
 
-  setCurrentSimulation: (simulation: SimulationResult | null): void => {
+  loadRaceSimulations: async (raceId: number, driverId?: number): Promise<void> => {
+    set({ isLoading: true, error: null })
+    
+    try {
+      let url = `${API_BASE_URL}/api/v1/simulations?race_id=${raceId}`
+      
+      if (driverId) {
+        url += `&driver_id=${driverId}`
+      }
+      
+      const result = await authenticatedApiCall<{ simulations: Simulation[] }>(url)
+      
+      set({ 
+        raceSimulations: result.simulations,
+        isLoading: false 
+      })
+    } catch (error) {
+      set({ 
+        error: error instanceof Error ? error.message : 'Erreur lors du chargement des simulations',
+        isLoading: false 
+      })
+    }
+  },
+
+  loadSimulation: async (simulationId: number): Promise<void> => {
+    set({ isLoading: true, error: null })
+    
+    try {
+      const simulation = await authenticatedApiCall<Simulation>(
+        `${API_BASE_URL}/api/v1/simulations/${simulationId}`
+      )
+      
+      set({ 
+        currentSimulation: simulation,
+        isLoading: false 
+      })
+    } catch (error) {
+      set({ 
+        error: error instanceof Error ? error.message : 'Erreur lors du chargement de la simulation',
+        isLoading: false 
+      })
+    }
+  },
+
+  setCurrentSimulation: (simulation: Simulation | null): void => {
     set({ currentSimulation: simulation })
   },
 
@@ -159,6 +172,7 @@ export const useSimulationStore = create<SimulationState>((set) => ({
 // Selectors (REQUIRED by project-context.md)
 export const selectCurrentSimulation = (state: SimulationState) => state.currentSimulation
 export const selectUserSimulations = (state: SimulationState) => state.userSimulations
+export const selectRaceSimulations = (state: SimulationState) => state.raceSimulations
 export const selectIsSimulating = (state: SimulationState) => state.isSimulating
 export const selectSimulationLoading = (state: SimulationState) => state.isLoading
 export const selectSimulationError = (state: SimulationState) => state.error

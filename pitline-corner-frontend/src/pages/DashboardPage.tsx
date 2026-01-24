@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore, selectUser } from '../stores/authStore'
-import { MainLayout } from '@/components/layout/MainLayout'
+import { AppLayout } from '@/components/layout/AppLayout'
 import { StatsGrid } from '@/components/ui/stats-grid'
 import { ActivityGrid } from '@/components/ui/activity-grid'
 import { ChartContainer } from '@/components/ui/chart'
@@ -18,7 +18,7 @@ export default function DashboardPage() {
   }, [user, navigate])
 
   return (
-    <MainLayout>
+    <AppLayout>
       <div className="f1-page">
         {/* Stats Section */}
         <div className="f1-stats">
@@ -62,6 +62,6 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
-    </MainLayout>
+    </AppLayout>
   )
 }

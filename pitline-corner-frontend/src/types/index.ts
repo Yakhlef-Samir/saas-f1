@@ -50,6 +50,7 @@ export interface Race {
   imported_at?: string
   created_at?: string
   updated_at?: string
+  circuit?: Circuit
 }
 
 export interface Circuit {

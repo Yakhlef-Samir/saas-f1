@@ -1,12 +1,51 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { MainLayout } from '@/components/layout/MainLayout'
+import { useState, useEffect } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
+import { AppLayout } from '@/components/layout/AppLayout'
+import {
+  useStrategyStore,
+  selectPitStopSimulation,
+  selectStrategyLoading,
+  selectStrategyError,
+  useRaceStore,
+  selectRaces,
+  selectDrivers
+} from '@/stores'
 import '@/styles/f1-modern.css'
 
 export default function StrategyPage() {
-  const [selectedScenario, setSelectedScenario] = useState('overtake')
-  const [selectedDriver, setSelectedDriver] = useState('ver')
+  const [searchParams] = useSearchParams()
+  const [selectedScenario, setSelectedScenario] = useState('pitstop')
+  const [selectedDriver, setSelectedDriver] = useState('1')
   const [targetLap, setTargetLap] = useState(25)
+
+  // Get data from stores
+  const pitStopSimulation = useStrategyStore(selectPitStopSimulation)
+  const isLoading = useStrategyStore(selectStrategyLoading)
+  const error = useStrategyStore(selectStrategyError)
+  const simulatePitStop = useStrategyStore((state) => state.simulatePitStop)
+  const clearError = useStrategyStore((state) => state.clearError)
+
+  const races = useRaceStore(selectRaces)
+  const drivers = useRaceStore(selectDrivers)
+  const loadRaces = useRaceStore((state) => state.loadRaces)
+  const loadDrivers = useRaceStore((state) => state.loadDrivers)
+
+  // Get race ID from URL params
+  const raceId = parseInt(searchParams.get('raceId') || '1')
+
+  // Load data on mount
+  useEffect(() => {
+    loadRaces()
+    loadDrivers()
+  }, [loadRaces, loadDrivers])
+
+  // Handle pit stop simulation
+  const handleSimulate = async () => {
+    if (!raceId || !selectedDriver || !targetLap) return
+
+    const driverId = parseInt(selectedDriver)
+    await simulatePitStop(raceId, driverId, targetLap)
+  }
 
   const scenarios = [
     {
@@ -35,17 +74,10 @@ export default function StrategyPage() {
     }
   ]
 
-  const drivers = [
-    { id: 'ver', name: 'Verstappen', team: 'Red Bull', number: 1 },
-    { id: 'lec', name: 'Leclerc', team: 'Ferrari', number: 16 },
-    { id: 'ham', name: 'Hamilton', team: 'Mercedes', number: 44 },
-    { id: 'per', name: 'Perez', team: 'Red Bull', number: 11 },
-    { id: 'sai', name: 'Sainz', team: 'Ferrari', number: 55 },
-    { id: 'rus', name: 'Russell', team: 'Mercedes', number: 63 }
-  ]
+  const currentRace = races.find((r) => r.id === raceId)
 
   return (
-    <MainLayout>
+    <AppLayout>
       <div className="f1-page">
         <div className="f1-strategy-page">
           {/* Hero Section */}
@@ -57,8 +89,28 @@ export default function StrategyPage() {
               <p className="f1-strategy-hero-subtitle">
                 Voyagez dans le temps pour optimiser vos stratégies de course
               </p>
+              {currentRace && (
+                <p className="f1-strategy-race-info">
+                  {currentRace.name} - {new Date(currentRace.date).getFullYear()}
+                </p>
+              )}
             </div>
           </section>
+
+          {/* Error Display */}
+          {error && (
+            <section className="f1-strategy-error">
+              <div className="f1-strategy-error-content">
+                <p className="f1-strategy-error-message">{error}</p>
+                <button
+                  className="f1-strategy-btn f1-strategy-btn-outline"
+                  onClick={clearError}
+                >
+                  Fermer
+                </button>
+              </div>
+            </section>
+          )}
 
           {/* Strategy Selection */}
           <section className="f1-strategy-selection">
@@ -66,7 +118,7 @@ export default function StrategyPage() {
               <h2 className="f1-strategy-section-title">
                 Choisissez votre Scénario
               </h2>
-              
+
               <div className="f1-strategy-scenarios">
                 {scenarios.map((scenario) => (
                   <div
@@ -95,7 +147,7 @@ export default function StrategyPage() {
               <h2 className="f1-strategy-section-title">
                 Configuration de la Simulation
               </h2>
-              
+
               <div className="f1-strategy-config-grid">
                 {/* Driver Selection */}
                 <div className="f1-strategy-config-card">
@@ -103,25 +155,29 @@ export default function StrategyPage() {
                     Pilote Sélectionné
                   </h3>
                   <div className="f1-strategy-driver-grid">
-                    {drivers.map((driver) => (
-                      <div
-                        key={driver.id}
-                        className={`f1-strategy-driver-card ${selectedDriver === driver.id ? 'active' : ''}`}
-                        onClick={() => setSelectedDriver(driver.id)}
-                      >
-                        <div className="f1-strategy-driver-number">
-                          {driver.number}
-                        </div>
-                        <div className="f1-strategy-driver-info">
-                          <div className="f1-strategy-driver-name">
-                            {driver.name}
+                    {drivers.length > 0 ? (
+                      drivers.slice(0, 6).map((driver) => (
+                        <div
+                          key={driver.id}
+                          className={`f1-strategy-driver-card ${selectedDriver === String(driver.id) ? 'active' : ''}`}
+                          onClick={() => setSelectedDriver(String(driver.id))}
+                        >
+                          <div className="f1-strategy-driver-number">
+                            {driver.driver_number}
                           </div>
-                          <div className="f1-strategy-driver-team">
-                            {driver.team}
+                          <div className="f1-strategy-driver-info">
+                            <div className="f1-strategy-driver-name">
+                              {driver.code}
+                            </div>
+                            <div className="f1-strategy-driver-team">
+                              {driver.team}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))
+                    ) : (
+                      <p>Chargement des pilotes...</p>
+                    )}
                   </div>
                 </div>
 
@@ -161,69 +217,80 @@ export default function StrategyPage() {
               <h2 className="f1-strategy-section-title">
                 Résultats de Simulation
               </h2>
-              
-              <div className="f1-strategy-results-grid">
-                <div className="f1-strategy-result-card">
-                  <div className="f1-strategy-result-header">
-                    <h3 className="f1-strategy-result-title">
-                      Position Actuelle
-                    </h3>
-                    <div className="f1-strategy-result-value">
-                      P5
-                    </div>
-                  </div>
-                  <div className="f1-strategy-result-details">
-                    <div className="f1-strategy-result-detail">
-                      <span className="f1-strategy-detail-label">Temps au tour:</span>
-                      <span className="f1-strategy-detail-value">1:23.456</span>
-                    </div>
-                    <div className="f1-strategy-result-detail">
-                      <span className="f1-strategy-detail-label">Écart au leader:</span>
-                      <span className="f1-strategy-detail-value">+12.345s</span>
-                    </div>
-                  </div>
-                </div>
 
-                <div className="f1-strategy-result-card highlight">
-                  <div className="f1-strategy-result-header">
-                    <h3 className="f1-strategy-result-title">
-                      Position Prédite
-                    </h3>
-                    <div className="f1-strategy-result-value success">
-                      P3
+              {pitStopSimulation && selectedScenario === 'pitstop' ? (
+                <div className="f1-strategy-results-grid">
+                  <div className="f1-strategy-result-card">
+                    <div className="f1-strategy-result-header">
+                      <h3 className="f1-strategy-result-title">
+                        Position Actuelle
+                      </h3>
+                      <div className="f1-strategy-result-value">
+                        P{pitStopSimulation.original_position_final}
+                      </div>
+                    </div>
+                    <div className="f1-strategy-result-details">
+                      <div className="f1-strategy-result-detail">
+                        <span className="f1-strategy-detail-label">Arrêt original:</span>
+                        <span className="f1-strategy-detail-value">
+                          Tour {pitStopSimulation.original_stop_lap}
+                        </span>
+                      </div>
+                      <div className="f1-strategy-result-detail">
+                        <span className="f1-strategy-detail-label">Stratégie:</span>
+                        <span className="f1-strategy-detail-value">
+                          {pitStopSimulation.detailed_analysis.original_tire_strategy}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                  <div className="f1-strategy-result-details">
-                    <div className="f1-strategy-result-detail">
-                      <span className="f1-strategy-detail-label">Gain:</span>
-                      <span className="f1-strategy-detail-value success">+2 positions</span>
-                    </div>
-                    <div className="f1-strategy-result-detail">
-                      <span className="f1-strategy-detail-label">Confiance:</span>
-                      <span className="f1-strategy-detail-value">85%</span>
-                    </div>
-                  </div>
-                </div>
 
-                <div className="f1-strategy-result-card">
-                  <div className="f1-strategy-result-header">
-                    <h3 className="f1-strategy-result-title">
-                      Recommandation
-                    </h3>
-                    <div className="f1-strategy-result-icon">
-                      🏁
+                  <div className="f1-strategy-result-card highlight">
+                    <div className="f1-strategy-result-header">
+                      <h3 className="f1-strategy-result-title">
+                        Position Prédite
+                      </h3>
+                      <div className={`f1-strategy-result-value ${pitStopSimulation.position_gain > 0 ? 'success' : ''}`}>
+                        P{pitStopSimulation.alternative_position_final}
+                      </div>
+                    </div>
+                    <div className="f1-strategy-result-details">
+                      <div className="f1-strategy-result-detail">
+                        <span className="f1-strategy-detail-label">Gain position:</span>
+                        <span className={`f1-strategy-detail-value ${pitStopSimulation.position_gain > 0 ? 'success' : ''}`}>
+                          {pitStopSimulation.position_gain > 0 ? '+' : ''}{pitStopSimulation.position_gain}
+                        </span>
+                      </div>
+                      <div className="f1-strategy-result-detail">
+                        <span className="f1-strategy-detail-label">Confiance:</span>
+                        <span className="f1-strategy-detail-value">
+                          {pitStopSimulation.confidence_score.toFixed(0)}%
+                        </span>
+                      </div>
                     </div>
                   </div>
-                  <div className="f1-strategy-result-details">
-                    <div className="f1-strategy-recommendation">
-                      <p>
-                        Dépassement conseillé au virage 3. 
-                        Utilisez l'aileron arrière DRS activé.
-                      </p>
+
+                  <div className="f1-strategy-result-card">
+                    <div className="f1-strategy-result-header">
+                      <h3 className="f1-strategy-result-title">
+                        Recommandation
+                      </h3>
+                      <div className="f1-strategy-result-icon">
+                        🎯
+                      </div>
+                    </div>
+                    <div className="f1-strategy-result-details">
+                      <div className="f1-strategy-recommendation">
+                        <p>{pitStopSimulation.recommendation}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <div className="f1-strategy-results-placeholder">
+                  <p>Lancez la simulation pour voir les résultats</p>
+                </div>
+              )}
             </div>
           </section>
 
@@ -231,20 +298,24 @@ export default function StrategyPage() {
           <section className="f1-strategy-actions">
             <div className="f1-strategy-container">
               <div className="f1-strategy-buttons">
-                <button className="f1-strategy-btn f1-strategy-btn-primary">
-                  Lancer la Simulation
+                <button
+                  className="f1-strategy-btn f1-strategy-btn-primary"
+                  onClick={handleSimulate}
+                  disabled={isLoading || !selectedDriver}
+                >
+                  {isLoading ? 'Simulation en cours...' : 'Lancer la Simulation'}
                 </button>
                 <button className="f1-strategy-btn f1-strategy-btn-outline">
                   Exporter les Résultats
                 </button>
-                <Link to="/dashboard" className="f1-strategy-btn f1-strategy-btn-outline">
-                  Retour au Dashboard
+                <Link to="/races" className="f1-strategy-btn f1-strategy-btn-outline">
+                  Retour aux Courses
                 </Link>
               </div>
             </div>
           </section>
         </div>
       </div>
-    </MainLayout>
+    </AppLayout>
   )
 }

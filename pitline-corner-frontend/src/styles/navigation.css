@@ -1,0 +1,143 @@
+/* F1 Color Scheme */
+:root {
+  --f1-red: #e10600;
+  --f1-red-dark: #b80500;
+  --f1-dark: #15151e;
+  --f1-dark-hover: #2a2a38;
+  --f1-dark-border: #3a3a48;
+  --f1-cyan: #00d4ff;
+  --f1-gray: #f5f5f5;
+}
+
+/* Sidebar Navigation Styling */
+.f1-nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  color: #d1d1d1;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.f1-nav-item:hover {
+  background-color: var(--f1-dark-hover);
+  color: var(--f1-cyan);
+}
+
+.f1-nav-item.active {
+  background-color: var(--f1-red);
+  color: white;
+  box-shadow: 0 0 12px rgba(225, 6, 0, 0.3);
+}
+
+.f1-nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 24px;
+  background: var(--f1-cyan);
+  border-radius: 0 2px 2px 0;
+}
+
+/* Main Content Layout */
+.f1-main-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--f1-dark);
+}
+
+.f1-main-layout .sidebar {
+  flex-shrink: 0;
+}
+
+.f1-main-layout .content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.f1-main-layout .main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 1024px) {
+  .f1-main-layout {
+    flex-direction: column;
+  }
+
+  .f1-main-layout .sidebar {
+    position: fixed;
+    left: -100%;
+    top: 0;
+    width: 100%;
+    max-width: 256px;
+    height: 100vh;
+    transition: left 0.3s ease;
+    z-index: 40;
+  }
+
+  .f1-main-layout .sidebar.active {
+    left: 0;
+  }
+
+  .f1-main-layout .main {
+    padding: 1rem;
+    margin-top: 3rem;
+  }
+}
+
+/* Smooth Scrollbar Styling */
+.f1-main-layout .main::-webkit-scrollbar {
+  width: 8px;
+}
+
+.f1-main-layout .main::-webkit-scrollbar-track {
+  background: var(--f1-dark-hover);
+  border-radius: 4px;
+}
+
+.f1-main-layout .main::-webkit-scrollbar-thumb {
+  background: var(--f1-red);
+  border-radius: 4px;
+}
+
+.f1-main-layout .main::-webkit-scrollbar-thumb:hover {
+  background: var(--f1-red-dark);
+}
+
+/* Navigation Animation */
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.f1-nav-item {
+  animation: slideIn 0.3s ease;
+}

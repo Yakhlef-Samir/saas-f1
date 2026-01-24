@@ -3734,3 +3734,30 @@ body {
     font-size: 0.875rem;
   }
 }
+
+/* Strategy Page Styles */
+.f1-strategy-error {
+  background-color: #FEE2E2;
+  border: 1px solid #FECACA;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 2rem 0;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.f1-strategy-error-message {
+  color: #991B1B;
+  margin-bottom: 1rem;
+}
+
+.f1-strategy-results-placeholder {
+  background-color: var(--f1-gray-light);
+  border: 2px dashed var(--f1-gray);
+  border-radius: 0.5rem;
+  padding: 3rem;
+  text-align: center;
+  color: var(--f1-gray);
+  font-style: italic;
+}
