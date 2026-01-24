@@ -4,7 +4,8 @@ import { AppLayout } from '@/components/layout/AppLayout'
 import { useRaceStore, selectCurrentRace, selectDrivers, selectLapData, selectRaceLoading, selectRaceError } from '@/stores'
 import '@/styles/f1-core.css'
 import '@/styles/race-detail.css'
-import { COUNTRY_ISO2 } from "../hooks/useCountryCodes";
+import { COUNTRY_ISO2 } from "../hooks/useCountryCodes"
+import ReactCountryFlag from "react-country-flag";
 
 
 const RaceDetailPage = () => {
@@ -230,9 +231,18 @@ const RaceDetailPage = () => {
                     <div className="mb-6">
                       <div className="text-2xl font-bold text-gray-900 flex items-center gap-3">
                         {currentRace?.circuit?.name || 'Unknown circuit'}
-                        <span className="text-lg">
-                          {currentRace?.country ? COUNTRY_CODES[currentRace.country] ?? 'Unknown country' : 'Unknown country'}
-                        </span>
+                        {currentRace?.country && COUNTRY_ISO2[currentRace.country] && (
+                          <ReactCountryFlag
+                            countryCode={COUNTRY_ISO2[currentRace.country]}
+                            svg
+                            style={{
+                              width: '2em',
+                              height: '2em',
+                              borderRadius: '4px'
+                            }}
+                            title={currentRace?.country}
+                          />
+                        )}
                       </div>
                       <div className="text-sm text-gray-600 mt-1">{currentRace?.circuit?.country || 'Unknown country'}</div>
                     </div>
