@@ -45,3 +45,8 @@ dist-ssr
 # # BMad configuration files (keep local)
 # bmad-config.yaml
 # bmad-settings.json
+
+# Documentation and markdown files
+*.md
+!README.md
+!

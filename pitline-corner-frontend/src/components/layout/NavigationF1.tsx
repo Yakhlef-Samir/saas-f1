@@ -8,11 +8,9 @@ export function NavigationF1() {
   const { user, logout } = useAuth()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
+  // Navigation simplifiée - sidebar gère les features authentifiées
   const navigation = [
     { name: 'Accueil', href: '/', icon: 'home' },
-    { name: 'Race Library', href: '/library', icon: 'flag' },
-    { name: 'Strategy Time Machine', href: '/strategy', icon: 'clock' },
-    { name: 'Dashboard', href: '/dashboard', icon: 'chart', requiresAuth: true },
   ]
 
   const isActive = (href: string) => {

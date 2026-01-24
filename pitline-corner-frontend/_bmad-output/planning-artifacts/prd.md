@@ -23,7 +23,7 @@ classification:
 
 ### User Success
 
-Le succès utilisateur du Virtual Pit Wall se mesure par des moments clés de révélation et de transformation de la compréhension :
+Le succès utilisateur du pitlane corner se mesure par des moments clés de révélation et de transformation de la compréhension :
 
 **Le Moment "Aha!" :**
 - **Principal :** Lorsque l'utilisateur teste son premier scénario "Et si..." et voit la visualisation concrète de l'impact stratégique (ex: simulation d'arrêt un tour plus tôt montrant la position de sortie et le trafic)

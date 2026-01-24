@@ -1,16 +1,17 @@
 import { Link } from 'react-router-dom'
 import '@/styles/f1-modern.css'
 
+interface FooterLink {
+  name: string
+  href: string
+}
+
 export function FooterF1() {
   const currentYear = new Date().getFullYear()
-  
-  const footerLinks = {
-    product: [
-      { name: 'Race Library', href: '/library' },
-      { name: 'Strategy Time Machine', href: '/strategy' },
-      { name: 'Academy', href: '/academy' },
-      { name: 'Dashboard', href: '/dashboard' },
-    ],
+
+  // Footer simplifié - pages publiques uniquement
+  const footerLinks: Record<string, FooterLink[]> = {
+    product: [],
     company: [
       { name: 'GitHub', href: 'https://github.com/Yakhlef-Samir/saas-f1' },
     ],
@@ -87,21 +88,23 @@ export function FooterF1() {
           </div>
 
           {/* Links Columns */}
-          <div className="f1-footer-column">
-            <h3 className="f1-footer-title">Produit</h3>
-            <ul className="f1-footer-links">
-              {footerLinks.product.map((link) => (
-                <li key={link.name}>
-                  <Link 
-                    to={link.href} 
-                    className="f1-footer-link"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {footerLinks.product.length > 0 && (
+            <div className="f1-footer-column">
+              <h3 className="f1-footer-title">Produit</h3>
+              <ul className="f1-footer-links">
+                {footerLinks.product.map((link) => (
+                  <li key={link.name}>
+                    <Link
+                      to={link.href}
+                      className="f1-footer-link"
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {footerLinks.company.length > 0 && (
             <div className="f1-footer-column">
