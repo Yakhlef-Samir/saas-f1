@@ -182,7 +182,7 @@ body {
 }
 
 .f1-login-input::placeholder {
-  color: rgba(255, 255, 255, 0.6) !important;
+  color: var(--f1-black) !important;
 }
 
 .f1-login-input:focus {
@@ -384,7 +384,7 @@ body {
   letter-spacing: 0.05em;
   border: 1px solid #D1D5DB;
   background: var(--f1-white);
-  color: var(--f1-gray);
+  color: var(--f1-black);
   border-radius: 0.375rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -413,7 +413,7 @@ body {
   letter-spacing: 0.05em;
   border: 1px solid #D1D5DB;
   background: var(--f1-white);
-  color: var(--f1-gray);
+  color: var(--f1-black);
   border-radius: 0.375rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -449,7 +449,7 @@ body {
 .f1-active-filters-label {
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--f1-gray);
+  color: var(--f1-black);
 }
 
 .f1-filter-tag {
@@ -502,7 +502,7 @@ body {
   border: none;
   border-bottom: 2px solid transparent;
   font-weight: 600;
-  color: var(--f1-gray);
+  color: var(--f1-black);
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -612,7 +612,7 @@ body {
 }
 
 .f1-race-card-circuit {
-  color: var(--f1-gray);
+  color: var(--f1-black);
   margin-bottom: 1rem;
 }
 
@@ -627,7 +627,7 @@ body {
   align-items: center;
   gap: 0.25rem;
   font-size: 0.875rem;
-  color: var(--f1-gray);
+  color: var(--f1-black);
 }
 
 .f1-race-card-meta-item svg {
@@ -704,7 +704,7 @@ body {
 }
 
 .f1-race-card-compact-circuit {
-  color: var(--f1-gray);
+  color: var(--f1-black);
   font-size: 0.875rem;
   margin-bottom: 0.5rem;
 }
@@ -720,7 +720,7 @@ body {
   align-items: center;
   gap: 0.25rem;
   font-size: 0.75rem;
-  color: var(--f1-gray);
+  color: var(--f1-black);
 }
 
 .f1-race-card-compact-meta-item svg {
@@ -745,7 +745,7 @@ body {
 }
 
 .f1-empty-state p {
-  color: var(--f1-gray);
+  color: var(--f1-black);
   margin-bottom: 1.5rem;
 }
 
@@ -872,7 +872,7 @@ body {
 /* Footer */
 .f1-footer {
   background: var(--f1-black);
-  color: var(--f1-gray);
+  color: var(--f1-black);
   position: relative;
   overflow: hidden;
 }
@@ -961,7 +961,7 @@ body {
 }
 
 .f1-footer-description {
-  color: var(--f1-gray);
+  color: var(--f1-black);
   line-height: 1.6;
   max-width: 20rem;
   margin-top: 0.5rem;
@@ -981,7 +981,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--f1-gray);
+  color: var(--f1-black);
   transition: all 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -1023,7 +1023,7 @@ body {
 }
 
 .f1-footer-link {
-  color: var(--f1-gray);
+  color: var(--f1-black);
   text-decoration: none;
   transition: color 0.3s ease;
   font-size: 0.875rem;
@@ -1055,7 +1055,7 @@ body {
 
 .f1-footer-copyright {
   font-size: 0.875rem;
-  color: var(--f1-gray);
+  color: var(--f1-black);
 }
 
 .f1-footer-legal {
@@ -1066,7 +1066,7 @@ body {
 }
 
 .f1-footer-legal-link {
-  color: var(--f1-gray);
+  color: var(--f1-black);
   text-decoration: none;
   font-size: 0.875rem;
   transition: color 0.3s ease;
@@ -1180,7 +1180,7 @@ body {
   gap: 0.5rem;
   padding: 0.5rem 1rem;
   text-decoration: none;
-  color: var(--f1-gray);
+  color: var(--f1-black);
   font-weight: 500;
   border-radius: 0.5rem;
   transition: all 0.3s ease;
@@ -1246,7 +1246,7 @@ body {
 }
 
 .f1-nav-user-welcome {
-  color: var(--f1-gray);
+  color: var(--f1-black);
 }
 
 .f1-nav-user-email {
@@ -1281,8 +1281,8 @@ body {
 
 .f1-nav-btn-outline {
   background: transparent;
-  color: var(--f1-gray);
-  border-color: var(--f1-gray);
+  color: var(--f1-black);
+  border-color: var(--f1-black);
 }
 
 .f1-nav-btn-outline:hover {
@@ -1302,7 +1302,7 @@ body {
   border-radius: 0.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  color: var(--f1-gray);
+  color: var(--f1-black);
 }
 
 @media (min-width: 768px) {
@@ -1347,7 +1347,7 @@ body {
   gap: 0.75rem;
   padding: 0.75rem 1rem;
   text-decoration: none;
-  color: var(--f1-gray);
+  color: var(--f1-black);
   font-weight: 500;
   border-radius: 0.5rem;
   transition: all 0.3s ease;
@@ -1384,7 +1384,7 @@ body {
   gap: 0.75rem;
   padding: 0.75rem 1rem;
   text-decoration: none;
-  color: var(--f1-gray);
+  color: var(--f1-black);
   font-weight: 500;
   border-radius: 0.5rem;
   transition: all 0.3s ease;
@@ -1714,7 +1714,7 @@ body {
 .f1-dashboard-welcome-text {
   font-size: 1.2rem;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--f1-black);
 }
 
 .f1-dashboard-stats-grid {
@@ -1926,7 +1926,7 @@ body {
 }
 
 .f1-strategy-scenario-description {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--f1-black);
   text-align: center;
   line-height: 1.5;
 }
@@ -2010,7 +2010,7 @@ body {
 
 .f1-strategy-driver-team {
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--f1-black);
 }
 
 .f1-strategy-lap-config {
@@ -2063,7 +2063,7 @@ body {
 }
 
 .f1-strategy-lap-total {
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--f1-black);
   font-size: 1.25rem;
 }
 
@@ -2138,7 +2138,7 @@ body {
 }
 
 .f1-strategy-detail-label {
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--f1-black);
   font-size: 0.875rem;
 }
 
@@ -2329,7 +2329,7 @@ body {
 
 .f1-profile-level-text {
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--f1-black);
 }
 
 .f1-profile-info {
@@ -2393,7 +2393,7 @@ body {
 }
 
 .f1-profile-detail-label {
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--f1-black);
   font-weight: 600;
 }
 
@@ -2462,7 +2462,7 @@ body {
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 0.5rem 0.5rem 0 0;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--f1-black);
   cursor: pointer;
   transition: all 0.3s ease;
   white-space: nowrap;
@@ -2552,6 +2552,6 @@ body {
   border-radius: 0.5rem;
   padding: 3rem;
   text-align: center;
-  color: var(--f1-gray);
+  color: var(--f1-black);
   font-style: italic;
 }
