@@ -6,6 +6,8 @@ import { useRaces, useRaceFilters } from '@/hooks/useRaces'
 import type { Race } from '@/types'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
+import ReactCountryFlag from 'react-country-flag'
+import { COUNTRY_ISO2 } from '@/hooks/useCountryCodes'
 import '@/styles/f1-core.css'
 
 /**
@@ -313,7 +315,21 @@ export default function RaceLibraryPage() {
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
-                                <span>{race.country || 'Lieu'}</span>
+                                <span className="flex items-center gap-2">
+                                  {race.country || 'Lieu'}
+                                  {race.country && COUNTRY_ISO2[race.country] && (
+                                    <ReactCountryFlag
+                                      countryCode={COUNTRY_ISO2[race.country]}
+                                      svg
+                                      style={{
+                                        width: '1.2em',
+                                        height: '1.2em',
+                                        borderRadius: '2px'
+                                      }}
+                                      title={race.country}
+                                    />
+                                  )}
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -346,7 +362,21 @@ export default function RaceLibraryPage() {
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
-                                <span>{race.country || 'Lieu'}</span>
+                                <span className="flex items-center gap-2">
+                                  {race.country || 'Lieu'}
+                                  {race.country && COUNTRY_ISO2[race.country] && (
+                                    <ReactCountryFlag
+                                      countryCode={COUNTRY_ISO2[race.country]}
+                                      svg
+                                      style={{
+                                        width: '1.2em',
+                                        height: '1.2em',
+                                        borderRadius: '2px'
+                                      }}
+                                      title={race.country}
+                                    />
+                                  )}
+                                </span>
                               </div>
                             </div>
                           </div>
