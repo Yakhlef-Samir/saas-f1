@@ -285,6 +285,31 @@ body {
   color: #3B82F6;
 }
 
+/* Special handling for best lap time card - color based on improvement */
+.f1-stat-card-positive.f1-stat-card:nth-child(4) .f1-stat-value {
+  color: #8B5CF6;
+}
+
+.f1-stat-card-positive.f1-stat-card:nth-child(4) .f1-stat-icon {
+  color: #8B5CF6;
+}
+
+.f1-stat-card-positive.f1-stat-card:nth-child(4) .f1-stat-icon svg {
+  color: #8B5CF6;
+}
+
+.f1-stat-card-negative.f1-stat-card:nth-child(4) .f1-stat-value {
+  color: var(--f1-red);
+}
+
+.f1-stat-card-negative.f1-stat-card:nth-child(4) .f1-stat-icon {
+  color: var(--f1-red);
+}
+
+.f1-stat-card-negative.f1-stat-card:nth-child(4) .f1-stat-icon svg {
+  color: var(--f1-red);
+}
+
 .f1-stat-label {
   color: var(--f1-black);
   font-weight: 600;
