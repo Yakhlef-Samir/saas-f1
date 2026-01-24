@@ -4,6 +4,8 @@ import { AppLayout } from '@/components/layout/AppLayout'
 import { useRaceStore, selectCurrentRace, selectDrivers, selectLapData, selectRaceLoading, selectRaceError } from '@/stores'
 import '@/styles/f1-core.css'
 import '@/styles/race-detail.css'
+import { COUNTRY_ISO2 } from "../hooks/useCountryCodes";
+
 
 const RaceDetailPage = () => {
   const { raceId } = useParams<{ raceId: string }>()
@@ -90,7 +92,7 @@ const RaceDetailPage = () => {
               ) : (
                 <>
                   <h1 className="text-5xl font-bold text-red-600 mb-3">
-                    {currentRace?.name}
+                    {currentRace?.name || 'Bahrain Grand Prix'}
                   </h1>
                   <div className="flex items-center gap-6 text-sm text-gray-600">
                     <span className="flex items-center gap-2">
@@ -98,7 +100,7 @@ const RaceDetailPage = () => {
                     </span>
                     <span className="text-gray-400">•</span>
                     <span className="flex items-center gap-2">
-                      📍 {currentRace?.country}
+                      📍 {currentRace?.country || 'Bahrain'}
                     </span>
                     <span className="text-gray-400">•</span>
                     <span className={`flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor()}`}>
@@ -120,12 +122,12 @@ const RaceDetailPage = () => {
                 to={`/strategy/new?raceId=${raceId}`}
                 className="px-6 py-2 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition flex items-center gap-2"
               >
-                ▶ SIMULE LA COURSE
+                ► SIMULE LA COURSE
               </Link>
             </div>
           </div>
 
-          {/* STATS CARDS - 4 COLUMN GRID */}
+          {/* RACE OVERVIEW CARDS */}
           <div className="grid grid-cols-4 gap-6 mb-10">
             {isLoading ? (
               [...Array(4)].map((_, i) => (
@@ -135,20 +137,20 @@ const RaceDetailPage = () => {
               <>
                 <div className="bg-white rounded-lg shadow-sm border-l-4 border-red-600 p-5">
                   <div className="text-xs font-bold text-gray-500 uppercase tracking-widest">Saison</div>
-                  <div className="text-4xl font-bold text-red-600 mt-3">{currentRace?.season}</div>
+                  <div className="text-2xl font-bold text-red-600 mt-3">{currentRace?.season || '2024'}</div>
                 </div>
                 <div className="bg-white rounded-lg shadow-sm border-l-4 border-green-500 p-5">
                   <div className="text-xs font-bold text-gray-500 uppercase tracking-widest">Round</div>
-                  <div className="text-4xl font-bold text-green-500 mt-3">{currentRace?.round}</div>
+                  <div className="text-2xl font-bold text-green-500 mt-3">{currentRace?.round || '1'}</div>
                 </div>
                 <div className="bg-white rounded-lg shadow-sm border-l-4 border-yellow-500 p-5">
                   <div className="text-xs font-bold text-gray-500 uppercase tracking-widest">Pilotes</div>
-                  <div className="text-4xl font-bold text-yellow-500 mt-3">{drivers.length}</div>
+                  <div className="text-2xl font-bold text-yellow-500 mt-3">{drivers.length || '20'}</div>
                 </div>
                 <div className="bg-white rounded-lg shadow-sm border-l-4 border-blue-500 p-5">
                   <div className="text-xs font-bold text-gray-500 uppercase tracking-widest">Circuit</div>
-                  <div className="text-2xl font-bold text-blue-600 mt-3">{currentRace?.circuit?.name}</div>
-                  <div className="text-xs text-gray-500 mt-1">{currentRace?.circuit?.country}</div>
+                  <div className="text-xl font-bold text-blue-600 mt-3">{currentRace?.circuit?.name || 'Unknown circuit'}</div>
+                  <div className="text-xs text-gray-500 mt-1">{currentRace?.circuit?.country || 'Unknown country'}</div>
                 </div>
               </>
             )}
@@ -166,10 +168,10 @@ const RaceDetailPage = () => {
                     : 'text-gray-500 hover:text-gray-700'
                 }`}
               >
-                {tab === 'overview' && 'Aperçu'}
-                {tab === 'drivers' && 'Pilotes'}
-                {tab === 'laps' && 'Tours'}
-                {tab === 'pits' && 'Arrêts'}
+                {tab === 'overview' && 'APERÇU'}
+                {tab === 'drivers' && 'PILOTES'}
+                {tab === 'laps' && 'TOURS'}
+                {tab === 'pits' && 'ARRÊTS'}
               </button>
             ))}
           </div>
@@ -180,28 +182,36 @@ const RaceDetailPage = () => {
               {/* LEFT: Race Overview (2/3) */}
               <div className="col-span-2 bg-white rounded-xl shadow-sm p-8">
                 <h2 className="text-xl font-bold text-gray-900 flex items-center gap-3 mb-8">
-                  📋 Aperçu de la course
+                  Aperçu de la course
                 </h2>
 
                 {isLoading ? (
                   <div className="h-40 bg-gray-100 rounded-lg animate-pulse"></div>
                 ) : (
-                  <div className="grid grid-cols-2 gap-8">
-                    <div>
-                      <div className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Date</div>
-                      <div className="text-gray-900 font-semibold text-base">
-                        {currentRace && new Date(currentRace.date).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                  <div className="space-y-6">
+                    <div className="grid grid-cols-2 gap-8">
+                      <div>
+                        <div className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Date</div>
+                        <div className="text-gray-900 font-semibold text-base">
+                          {currentRace && new Date(currentRace.date).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Statut</div>
+                        <div className={`inline-block px-4 py-2 rounded-full text-xs font-bold ${getStatusColor()}`}>
+                          ⏳ {getStatusLabel()}
+                        </div>
                       </div>
                     </div>
-                    <div>
-                      <div className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Statut</div>
-                      <div className={`inline-block px-4 py-2 rounded-full text-xs font-bold ${getStatusColor()}`}>
-                        ⏳ {getStatusLabel()}
+                    <div className="grid grid-cols-2 gap-8">
+                      <div>
+                        <div className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Donnée importées</div>
+                        <div className="text-gray-900 font-semibold text-base">{currentRace?.data_imported ? 'Oui' : 'Non'}</div>
                       </div>
-                    </div>
-                    <div>
-                      <div className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Données importées</div>
-                      <div className="text-gray-900 font-semibold text-base">{currentRace?.data_imported ? 'Oui' : 'Non'}</div>
+                      <div>
+                        <div className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Donnée importées</div>
+                        <div className="text-gray-900 font-semibold text-base">{currentRace?.data_imported ? 'Oui' : 'Non'}</div>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -210,7 +220,7 @@ const RaceDetailPage = () => {
               {/* RIGHT: Circuit Card (1/3) */}
               <div className="bg-white rounded-xl shadow-sm p-8">
                 <h2 className="text-xl font-bold text-gray-900 flex items-center gap-3 mb-8">
-                  📍 Circuit
+                📍 Circuit
                 </h2>
 
                 {isLoading ? (
@@ -218,17 +228,28 @@ const RaceDetailPage = () => {
                 ) : (
                   <>
                     <div className="mb-6">
-                      <div className="text-2xl font-bold text-gray-900">{currentRace?.circuit?.name}</div>
-                      <div className="text-sm text-gray-600 mt-1">Bahrain</div>
+                      <div className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                        {currentRace?.circuit?.name || 'Unknown circuit'}
+                        <span className="text-lg">
+                          {currentRace?.country ? COUNTRY_CODES[currentRace.country] ?? 'Unknown country' : 'Unknown country'}
+                        </span>
+                      </div>
+                      <div className="text-sm text-gray-600 mt-1">{currentRace?.circuit?.country || 'Unknown country'}</div>
                     </div>
 
-                    <div className="flex gap-3">
-                      <span className="inline-block px-3 py-2 bg-gray-100 text-gray-800 rounded-full text-xs font-bold whitespace-nowrap">
-                        {currentRace?.circuit?.length_km} km
-                      </span>
-                      <span className="inline-block px-3 py-2 bg-gray-100 text-gray-800 rounded-full text-xs font-bold whitespace-nowrap">
-                        {currentRace?.circuit?.turns} virages
-                      </span>
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-3">
+                        <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Distance</span>
+                        <span className="inline-block px-3 py-2 bg-gray-100 text-gray-800 rounded-full text-xs font-bold whitespace-nowrap">
+                          {currentRace?.circuit?.length_km || '5'} km
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Virages</span>
+                        <span className="inline-block px-3 py-2 bg-gray-100 text-gray-800 rounded-full text-xs font-bold whitespace-nowrap">
+                          {currentRace?.circuit?.turns || '15'} virages
+                        </span>
+                      </div>
                     </div>
                   </>
                 )}
